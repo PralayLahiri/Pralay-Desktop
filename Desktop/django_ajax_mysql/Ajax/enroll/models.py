@@ -12,4 +12,9 @@ class User(models.Model):
     email = models.CharField(max_length=100, null=True)
     password  = models.CharField(max_length=100, null=True)
 
+class LogInUser(models.Model):
+    # id  = models.IntegerField(primary_key=True)
+    username  = models.CharField(max_length=70, null=True)
+    password  = models.CharField(max_length=100, null=True)    
+
     
