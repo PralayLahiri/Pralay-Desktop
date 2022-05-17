@@ -1,7 +1,10 @@
 <script>
+
+    //Insert data
     $("#btnsave").click(function () {
         console.log("Save Button");
 
+        let id = $("#stuid").val();
         let nm = $("#id_name").val();
         let em = $("#id_email").val();
         let pw = $("#id_password").val();
@@ -16,7 +19,7 @@
             console.log(nm);
             console.log(em);
             console.log(pw);
-            mydata = { name: nm, email: em, password: pw, csrfmiddlewaretoken: csr }
+            mydata = { stuid:id, name: nm, email: em, password: pw, csrfmiddlewaretoken: csr }
             console.log(mydata);
 
             $.ajax({
@@ -26,13 +29,24 @@
                 success: function (data) {
                     // console.log(data.status);
                     output = "";
-
+                    x = data.student_data;
                     if (data.status == "Save") {
-                        alert("Form Submitted Successfully");
-                        console.log("Form Submitted Successfully");
-                        console.log(data.student_data);
-                        x = data.student_data;
-                        console.log(x[1].id)
+                        if(id == ''){
+                            document.getElementById("msg").style.display = 'none';
+                            $('#msg1').text("Form Submitted Successfully");
+                            $('#msg1').show();
+                        }
+                        else{
+                            document.getElementById("msg").style.display = 'none';
+                            $('#msg1').text("Form Updated Successfully");
+                            $('#msg1').show();
+                        }
+                        
+                        //alert("Form Submitted Successfully");
+                        //console.log("Form Submitted Successfully");
+                        //console.log(data.student_data);
+                        
+                        //console.log(x[1].id)
 
                         for (i = 0; i < x.length; i++) {
                             output +=
@@ -45,12 +59,12 @@
                                 "</td><td>" +
                                 x[i].password +
                                 "</td><td> <input type='button'   class='btn btn-warning btn-edit' value='Edit' data-sid=" + x[i].id +
-                                ">  <input type='button'  class='btn btn-danger btn-edit' value='Delete' + data-sid=" +
+                                ">  <input type='button'  class='btn btn-danger  btn-del' value='Delete' + data-sid=" +
                                 x[i].id + "></td></tr><br>";
                         }
                         // console.log("Reload");
                         // console.log(output);
-                        alert(output);
+                        //alert(output);
 
                         $("#tbody").html(output);
 
@@ -68,5 +82,68 @@
 
         }
     });
+    //Insert data
 
+    //delete 
+    $("tbody").on("click",".btn-del",function(){
+        console.log("Delete btn clicked");
+        let id = $(this).attr("data-sid");
+        let csr = $("input[name = csrfmiddlewaretoken]").val();
+        console.log(id);
+        mydata={sid:id, csrfmiddlewaretoken: csr}
+        mythis = this;
+
+        $.ajax({
+            url: "{%url 'delete'%}",
+            method: "POST",
+            data: mydata,
+            success: function(data){
+                console.log(data)
+                if(data.status == 1){
+                    document.getElementById("msg1").style.display = 'none';
+                    $('#msg').text("Data Deleted Successfully!");
+                    $('#msg').show();
+                    console.log("Data Deleted Successfully!");
+                    $(mythis).closest("tr").fadeOut();
+
+                }
+                if(data.status == 0){
+                    console.log("Unable to Delete Data !!");
+                    //$(mythis).closest("tr").fadeOut();
+                    
+                }
+            },
+        });
+    });
+    //delete 
+
+
+
+    //Edit 
+    $("tbody").on("click",".btn-edit",function(){
+        console.log("Edit btn clicked");
+        let id = $(this).attr("data-sid");
+        let csr = $("input[name = csrfmiddlewaretoken]").val();
+        console.log(id);
+        mydata={sid:id, csrfmiddlewaretoken: csr}
+        mythis = this;
+
+        $.ajax({
+            url: "{%url 'edit'%}",
+            method: "POST",
+            data: mydata,
+            success: function(data){
+                console.log(data);
+                $("#stuid").val(data.id);
+                $("#id_name").val(data.name);
+                $("#id_email").val(data.email);
+                $("#id_password").val(data.password);
+                //$('#msg').text("Data Updated Successfully!");
+                //$('#msg').show();
+                
+
+            },
+        });
+    });
+    //Edit
 </script>
