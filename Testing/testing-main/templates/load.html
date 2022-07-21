@@ -1,0 +1,639 @@
+
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<script src="/static/js/cdn.tailwindcss.js"></script>
+<script src="/static/js/validation_gbm.js"></script>
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/Util.js"></script>
+<script src="/static/js/Helper.js"></script>
+<script src="/static/js/alpine.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+
+
+
+
+
+
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td,
+    th {
+        border: 1px solid rgba(248, 248, 252, 0.246);
+        /* #9ea7da; */
+
+        text-align: left;
+        padding: 8px;
+
+    }
+
+    tr:nth-child(even) {
+        background-color: rgb(165 180 252);
+
+    }
+</style>
+<script type="text/javascript">
+    function loadAgeSelector() {
+        // var startyear = 1984;
+        // var endyear = new Date().getFullYear();
+        var startyear = new Date().getFullYear();
+        var endyear = 1984;
+        var reminder;
+        for (var i = startyear; i >= endyear; i--) {
+            node = document.createElement("Option");
+            var next = i + 1;
+            var year = i + '-' + next.toString().slice(-2);
+
+            textnode = document.createTextNode(year);
+            node.appendChild(textnode);
+            node.value = i;
+            document.getElementById("Years_1").appendChild(node);
+        }
+    }
+</script>
+<title> Search PDF </title>
+<script type="text/javascript">
+    entry = []
+
+    function Add() {
+        //var txtCnt2 = document.getElementById("txtCnt2");
+        var txtCnt2 = document.getElementById("mtn_no")
+        var txtName = document.getElementById("txtName");
+        var descName = document.getElementById("descName");
+        var txtCnt = document.getElementById("txtCnt");
+        var txtCnt1 = document.getElementById("txtCnt1");
+        if (txtName.value == "Others") {
+            
+            AddRow(txtCnt2.value, descName.value, txtCnt.value, txtCnt1.value);
+            //AddRow(descName.value, txtCnt.value, txtCnt1.value);
+        } else {
+            
+            AddRow(txtCnt2.value, txtName.value, txtCnt.value, txtCnt1.value);
+            //AddRow(txtName.value, txtCnt.value, txtCnt1.value);
+            
+            
+        }
+        //txtCnt2.value = "";
+        txtName.value = "key_1";
+        txtCnt.value = "";
+        txtCnt1.value = "";
+        document.getElementById("descName").value = ""
+        document.getElementById("descName").style.display = 'none';
+        document.getElementById("txtName").style.selected = "selected";
+    };
+    //////////////////////// Array Insert ////////////////////////////
+    function Verify(button) {
+        //Determine the reference of the Row using the Button.
+        var row = button.parentNode.parentNode;
+
+        //var name = row.getElementsByTagName("TD")[0].innerHTML;
+        var name = document.getElementById("mtn_no").value;
+        var name1 = row.getElementsByTagName("TD")[0].innerHTML;
+        var name2 = row.getElementsByTagName("TD")[1].innerHTML;
+        var name3 = row.getElementsByTagName("TD")[2].innerHTML;
+        var rmvbtn = row.getElementsByTagName("TD")[3].firstElementChild;
+        var rmvvrfy = row.getElementsByTagName("TD")[4].firstElementChild;
+
+        entry.push(name + ",'" + name1 + "'," + name2 + "," + name3 + ",");
+        console.log("Array Entry: ",entry)
+
+        if (confirm("Do you want to save Agenda Topic: " + name1 + " ?")) {
+            /// the n disable Remove button
+            var table = document.getElementById("tblCustomers");
+            rmvbtn.className = 'bg-slate-400 opacity-500 rounded uppercase text-white px-4 py-2';
+            rmvbtn.disabled = true;
+
+            var table = document.getElementById("tblCustomers");
+            rmvvrfy.className = 'bg-slate-400 opacity-500 rounded uppercase text-white px-4 py-2';
+            rmvvrfy.disabled = true;
+
+        }
+    };
+    //////////////////////// Array Insert ////////////////////////////
+
+    function Remove(button) {
+        //Determine the reference of the Row using the Button.
+        var row = button.parentNode.parentNode;
+
+
+        //var name1 = row.getElementsByTagName("TD")[1].innerHTML;
+        var name1 = row.getElementsByTagName("TD")[0].innerHTML;
+
+        if (confirm("Do you want to delete Agenda Topic : " + name1)) {
+
+            //Get the reference of the Table.
+            var table = document.getElementById("tblCustomers");
+
+            //Delete the Table row using it's Index.
+            table.deleteRow(row.rowIndex);
+            //console.log("Deleted Value:  "+row.rowIndex)
+        }
+    };
+
+    function AddRow(Cnt2, name, Cnt, Cnt1) {
+        if(Cnt2 !="" && name !="key_1" && Cnt !="" && Cnt1 !="" && (Cnt1 >= Cnt)){
+
+        //Get the reference of the Table's TBODY element.
+        var tBody = document.getElementById("tblCustomers").getElementsByTagName("TBODY")[0];
+        //var tBody = document.getElementById("tblCustomers").getElementsByTagName("TBODY")[x];
+        tBody.setAttribute("class", "table-auto uppercase rounded text-indigo-900 bg-indigo-200  text-indigo-900");
+        //Add Row.
+        row = tBody.insertRow(-1); //-1
+        //tBody.setAttrinute("class","bg-indigo-200  text-indigo-900"); 
+        console.log("Remove button Row no.:" + row)
+        //}
+        //else{
+        //    alert("Start page number should be less or equals to end page number")
+        //}
+
+        //Add Meeting cell.
+        if( Cnt2 !="" ){
+        //    cell = row.insertCell(-1); //-1
+        //cell.innerHTML = Cnt2;
+        ////cell.value=Cnt2
+        //console.log(Cnt2);
+        }
+        else{
+            alert("Please provide meeting number")
+        }
+
+
+        //Add Name cell. 001
+        if( name!="key_1" ){
+            var cell = row.insertCell(-1); //-1
+            cell.innerHTML = name;
+            //cell.value=name
+        }
+        else{
+            alert("Please select agenda topic")
+        }
+        
+
+        //Add Start Page cell.
+        if( Cnt !="" ){
+            cell = row.insertCell(-1); //-1
+            cell.innerHTML = Cnt;
+        }
+        else{
+            alert("Please provide start page number")
+        }
+        
+
+        //Add  End Page cell.
+        if( Cnt1 !="" ){
+            cell = row.insertCell(-1); //-1
+            cell.innerHTML = Cnt1;
+        } 
+        else{
+            alert("Please provide end page number")
+        }   
+
+        //Add Button cell.
+        //if(Cnt2 !="" && name!="key_1" && Cnt !="" && Cnt1 !="" && (Cnt1 >= Cnt)){
+            cell = row.insertCell(-1); //1
+            var btnRemove = document.createElement("INPUT");
+
+            //btnRemove.type = "button";
+            btnRemove.type = "submit";
+            btnRemove.value = "Remove";
+            btnRemove.setAttribute("class",
+                "bg-indigo-500 opacity-500 hover:bg-indigo-400 rounded uppercase text-white  px-4 py-2 hover:-translate-y-1 transition ease-in-out delay-150 hover:scale-110 duration-300"
+                );
+            //btnRemove.classname = "bg-indigo-500 opacity-500 hover:bg-indigo-400 rounded uppercase text-white  px-4 py-2 hover:-translate-y-1 transition ease-in-out delay-150 hover:scale-110 duration-300";
+            //btnRemove.class = class=" bg-indigo-500 opacity-500 hover:bg-indigo-400 rounded uppercase text-white  px-4 py-2 hover:-translate-y-1 transition ease-in-out delay-150 hover:scale-110 duration-300";
+            btnRemove.setAttribute("onclick", "Remove(this);");
+            cell.appendChild(btnRemove);
+
+
+
+            //Add Button cell.
+            cell = row.insertCell(-1); //1
+            var btnVerify = document.createElement("INPUT");
+
+            //btnRemove.type = "button";
+            btnVerify.type = "submit";
+            btnVerify.value = "Verify";
+            btnVerify.setAttribute("class",
+                "bg-indigo-500 opacity-500 hover:bg-indigo-400 rounded uppercase text-white  px-4 py-2 hover:-translate-y-1 transition ease-in-out delay-150 hover:scale-110 duration-300"
+                );
+            //btnRemove.classname = "bg-indigo-500 opacity-500 hover:bg-indigo-400 rounded uppercase text-white  px-4 py-2 hover:-translate-y-1 transition ease-in-out delay-150 hover:scale-110 duration-300";
+            //btnRemove.class = class=" bg-indigo-500 opacity-500 hover:bg-indigo-400 rounded uppercase text-white  px-4 py-2 hover:-translate-y-1 transition ease-in-out delay-150 hover:scale-110 duration-300";
+            btnVerify.setAttribute("onclick", "Verify(this);");
+            cell.appendChild(btnVerify);
+        }
+        else{
+            if(Cnt2 =="" ){
+                alert("Please provide meeting number")
+            }
+            else{
+                if( name=="key_1" ){
+                    alert("Please select agenda topic")
+                }
+                else{
+                    if( Cnt =="" ){
+                        alert("Please provide end page number")
+                    }
+                    else{
+                        if( Cnt1 =="" ){
+                            alert("Please provide end page number")
+                        }
+                        else{
+                            alert("Start page number should be less or equals to end page number")
+                        }
+                    }
+                    
+                }
+                
+            }
+                         
+        }
+        
+    }
+
+    //function submition() {
+        
+
+    //function submition()
+    //{
+        function submition(){
+            $.ajax({
+               type: "POST",
+               url: "/InsertRecord",
+               data: {"entry": entry ,
+                      "year" : document.getElementById("Years_1").value,
+                      "pdf_name": document.getElementById("myFile").value,
+                      "pdf_key": document.getElementById("pdf_key").value,
+                      "csrfmiddlewaretoken" : "bA1pwtgDjCSP0Q6Eeyc7fVNMCJWvgAbcni4PVM5XRXuWQAO6YXN04gi3AfHltnFx" },
+               success: function() {
+                    alert('success');
+                 
+               }
+            });
+            //alert(entry);
+        //alert(entry);
+    }
+
+
+
+
+    
+</script>
+
+<body class="text-1xl font-semibold bg-gradient-to-r from-sky-100 to-indigo-400" onload="loadAgeSelector()">
+<form id="form1" action="/InsertRecord" method="POST" class="post-form"  enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="bA1pwtgDjCSP0Q6Eeyc7fVNMCJWvgAbcni4PVM5XRXuWQAO6YXN04gi3AfHltnFx">
+        <input type="hidden" name="csrfmiddlewaretoken" value="bA1pwtgDjCSP0Q6Eeyc7fVNMCJWvgAbcni4PVM5XRXuWQAO6YXN04gi3AfHltnFx">
+
+
+        <div class=" h-screen sticky ">
+
+            <div class=" mx-auto px-8 ">
+                <h1
+                    class="text-2xl uppercase font-semibold  py-6 text-center px-12  w-full bg-indigo-500 opacity-500  rounded uppercase text-white  px-4 py-2">
+                    GBM PDF UPLOAD</h1>
+                <p class="text-m uppercase text-center text-indigo-900">Please provide information to make an entry</p>
+                <p class="text-m uppercase text-center text-red-900"></p>
+                <hr>
+            </div>
+
+            <div class=" mx-auto px-8">
+                <div class="flex justify-between py-6"> 
+                    <div class="rounded text-indigo-900">Step 1* <br> <br> 
+                        <input type="hidden" name="csrfmiddlewaretoken" value="bA1pwtgDjCSP0Q6Eeyc7fVNMCJWvgAbcni4PVM5XRXuWQAO6YXN04gi3AfHltnFx"> 
+                        <input class="block w-full text-sm text-slate-500 
+                    file:mr-4 file:py-2 file:px-4 
+                    file:rounded-full file:border-0 
+                    file:text-sm file:font-semibold 
+                    file:bg-indigo-500 file:text-white bg-indigo-100
+                    hover:file:bg-indigo-400
+                    opacity-500  rounded-full  
+                    " type="file" id="myFile" name="filename" onchange="fileValidation(this), myFunction()"
+                            onclick="fileValidation_to_year()">
+                    </div>
+                    <div class="rounded text-indigo-900">Step 2* <br>
+                        Financial Year: <br>
+                        <select disabled=true class="rounded-full bg-indigo-100  px-4 py-2 outline-none" value="b"
+                            name="Years_1" id="Years_1" onchange="fileValidation_to_entry_type(this.value), fileValidation_to_mtng_no([['0004.pdf', 'K1984238', 1984, 4, 'BALANCE SHEETS', '46', '61'], ['0002.pdf', 'K1984239', 1984, 2, 'POLICIES AND STAFFRULES', '52', '57'], ['0002.pdf', 'K1984240', 1984, 2, 'POLICIES AND STAFFRULES', '69', '70'], ['0001.pdf', 'K1984241', 1984, 1, 'POLICIES AND STAFFRULES', '28', '32'], ['0002.pdf', 'K1984242', 1984, 2, 'CHEQUE SIGNING POWER', '23', '23'], ['0003.pdf', 'K1985243', 1985, 3, 'CHANGE IN MEMBERSHIP', '44', '46'], ['0003.pdf', 'K1985244', 1985, 3, 'POLICIES AND STAFFRULES', '58', '61'], ['0003.pdf', 'K1985245', 1985, 3, 'POLICIES AND STAFFRULES', '102', '176'], ['0003.pdf', 'K1985246', 1985, 3, 'POLICIES AND STAFFRULES', '212', '239'], ['0007.pdf', 'K1986247', 1986, 7, 'BALANCE SHEETS', '29', '35'], ['0005.pdf', 'K1986248', 1986, 5, 'CHANGE IN MEMBERSHIP', '19', '19'], ['0004.pdf', 'K1986249', 1986, 4, 'CHANGE IN MEMBERSHIP', '19', '22'], ['0005.pdf', 'K1986250', 1986, 5, 'POLICIES AND STAFFRULES', '78', '79'], ['0004.pdf', 'K1986251', 1986, 4, 'POLICIES AND STAFFRULES', '113', '139'], ['0009.pdf', 'K1987252', 1987, 9, 'BALANCE SHEETS', '36', '41'], ['0007.pdf', 'K1987253', 1987, 7, 'CHANGE IN MEMBERSHIP', '16', '18'], ['0006.pdf', 'K1987254', 1987, 6, 'CHANGE IN MEMBERSHIP', '58', '61'], ['0007.pdf', 'K1987255', 1987, 7, 'POLICIES AND STAFFRULES', '59', '66'], ['0006.pdf', 'K1987256', 1987, 6, 'POLICIES AND STAFFRULES', '62', '64'], ['0009.pdf', 'K1988257', 1988, 9, 'CHANGE IN MEMBERSHIP', '24', '27'], ['0009.pdf', 'K1988258', 1988, 9, 'POLICIES AND STAFFRULES', '46', '47'], ['0009.pdf', 'K1988259', 1988, 9, 'POLICIES AND STAFFRULES', '59', '80'], ['0008.pdf', 'K1988260', 1988, 8, 'POLICIES AND STAFFRULES', '23', '32'], ['0008.pdf', 'K1988261', 1988, 8, 'POLICIES AND STAFFRULES', '71', '75'], ['0008.pdf', 'K1988262', 1988, 8, 'CHEQUE SIGNING POWER', '88', '88'], ['0008.pdf', 'K1988263', 1988, 8, 'CHEQUE SIGNING POWER', '92', '93'], ['0011.pdf', 'K1989264', 1989, 11, 'BALANCE SHEETS', '65', '73'], ['0011.pdf', 'K1989265', 1989, 11, 'CHANGE IN MEMBERSHIP', '29', '37'], ['0010.pdf', 'K1989266', 1989, 10, 'CHANGE IN MEMBERSHIP', '60', '67'], ['0011.pdf', 'K1989267', 1989, 11, 'POLICIES AND STAFFRULES', '107', '108'], ['0010.pdf', 'K1989268', 1989, 10, 'POLICIES AND STAFFRULES', '119', '134'], ['0010.pdf', 'K1989269', 1989, 10, 'POLICIES AND STAFFRULES', '198', '202'], ['0013.pdf', 'K1990270', 1990, 13, 'BALANCE SHEETS', '39', '48'], ['0012.pdf', 'K1990271', 1990, 12, 'CHANGE IN MEMBERSHIP', '34', '38'], ['0013.pdf', 'K1990272', 1990, 13, 'POLICIES AND STAFFRULES', '58', '60'], ['0013.pdf', 'K1990273', 1990, 13, 'POLICIES AND STAFFRULES', '85', '90'], ['0014.pdf', 'K1991274', 1991, 14, 'BALANCE SHEETS', '31', '41'], ['0015.pdf', 'K1991275', 1991, 15, 'CHANGE IN MEMBERSHIP', '18', '22'], ['0014.pdf', 'K1991276', 1991, 14, 'CHEQUE SIGNING POWER', '43', '43'], ['0018.pdf', 'K1992277', 1992, 18, 'BALANCE SHEETS', '37', '45'], ['0018.pdf', 'K1992278', 1992, 18, 'CHANGE IN MEMBERSHIP', '24', '29'], ['0017.pdf', 'K1992279', 1992, 17, 'CHANGE IN MEMBERSHIP', '35', '36'], ['0016.pdf', 'K1992280', 1992, 16, 'CHANGE IN MEMBERSHIP', '26', '28'], ['0018.pdf', 'K1992281', 1992, 18, 'POLICIES AND STAFFRULES', '51', '52'], ['0018.pdf', 'K1992282', 1992, 18, 'POLICIES AND STAFFRULES', '76', '80'], ['0017.pdf', 'K1992283', 1992, 17, 'POLICIES AND STAFFRULES', '45', '56'], ['0016.pdf', 'K1992284', 1992, 16, 'POLICIES AND STAFFRULES', '31', '37'], ['0022.pdf', 'K1993285', 1993, 22, 'BALANCE SHEETS', '51', '62'], ['0021.pdf', 'K1993286', 1993, 21, 'BALANCE SHEETS', '55', '66'], ['0021.pdf', 'K1993287', 1993, 21, 'CHANGE IN MEMBERSHIP', '13', '17'], ['0019.pdf', 'K1993288', 1993, 19, 'CHANGE IN MEMBERSHIP', '13', '14'], ['0022.pdf', 'K1993289', 1993, 22, 'POLICIES AND STAFFRULES', '31', '43'], ['0022.pdf', 'K1993290', 1993, 22, 'POLICIES AND STAFFRULES', '75', '84'], ['0019.pdf', 'K1993291', 1993, 19, 'POLICIES AND STAFFRULES', '62', '64'], ['0022.pdf', 'K1993292', 1993, 22, 'CHEQUE SIGNING POWER', '30', '30'], ['0024.pdf', 'K1994293', 1994, 24, 'BALANCE SHEETS', '138', '155'], ['0024.pdf', 'K1994294', 1994, 24, 'POLICIES AND STAFFRULES', '124', '125'], ['0024.pdf', 'K1994295', 1994, 24, 'POLICIES AND STAFFRULES', '162', '162'], ['0024.pdf', 'K1994296', 1994, 24, 'POLICIES AND STAFFRULES', '168', '173'], ['0023.pdf', 'K1994297', 1994, 23, 'POLICIES AND STAFFRULES', '66', '68'], ['0026.pdf', 'K1995298', 1995, 26, 'BALANCE SHEETS', '119', '133'], ['0025.pdf', 'K1995299', 1995, 25, 'CHANGE IN MEMBERSHIP', '18', '23'], ['0025.pdf', 'K1995300', 1995, 25, 'POLICIES AND STAFFRULES', '85', '95'], ['0029.pdf', 'K1996301', 1996, 29, 'BALANCE SHEETS', '22', '29'], ['0029.pdf', 'K1996302', 1996, 29, 'CHANGE IN MEMBERSHIP', '102', '103'], ['0028.pdf', 'K1996303', 1996, 28, 'POLICIES AND STAFFRULES', '25', '31'], ['0027.pdf', 'K1996304', 1996, 27, 'POLICIES AND STAFFRULES', '31', '31'], ['0030.pdf', 'K1997305', 1997, 30, 'BALANCE SHEETS', '26', '33'], ['0030.pdf', 'K1997306', 1997, 30, 'CHANGE IN MEMBERSHIP', '23', '23'], ['0031.pdf', 'K1997307', 1997, 31, 'POLICIES AND STAFFRULES', '56', '65'], ['0031.pdf', 'K1997308', 1997, 31, 'POLICIES AND STAFFRULES', '71', '84'], ['0032.pdf', 'K1998309', 1998, 32, 'BALANCE SHEETS', '33', '40'], ['0033.pdf', 'K1998310', 1998, 33, 'CHANGE IN MEMBERSHIP', '23', '31'], ['0032.pdf', 'K1998311', 1998, 32, 'CHANGE IN MEMBERSHIP', '72', '72'], ['0033.pdf', 'K1998312', 1998, 33, 'POLICIES AND STAFFRULES', '77', '96'], ['0033.pdf', 'K1998313', 1998, 33, 'POLICIES AND STAFFRULES', '133', '140'], ['0034.pdf', 'K1999314', 1999, 34, 'BALANCE SHEETS', '52', '62'], ['0034.pdf', 'K1999315', 1999, 34, 'POLICIES AND STAFFRULES', '42', '49'], ['0034.pdf', 'K1999316', 1999, 34, 'POLICIES AND STAFFRULES', '72', '83'], ['0036.pdf', 'K2000317', 2000, 36, 'BALANCE SHEETS', '50', '60'], ['0036.pdf', 'K2000318', 2000, 36, 'CHANGE IN MEMBERSHIP', '18', '19'], ['0037.pdf', 'K2000319', 2000, 37, 'CHEQUE SIGNING POWER', '42', '43'], ['0040.pdf', 'K2001320', 2001, 40, 'BALANCE SHEETS', '25', '30'], ['0040.pdf', 'K2001321', 2001, 40, 'CHANGE IN MEMBERSHIP', '21', '21'], ['0043.pdf', 'K2002322', 2002, 43, 'BALANCE SHEETS', '26', '33'], ['0045.pdf', 'K2003323', 2003, 45, 'BALANCE SHEETS', '37', '44'], ['0044.pdf', 'K2003324', 2003, 44, 'CHANGE IN MEMBERSHIP', '18', '19'], ['0045.pdf', 'K2003325', 2003, 45, 'POLICIES AND STAFFRULES', '62', '67'], ['0045.pdf', 'K2003326', 2003, 45, 'POLICIES AND STAFFRULES', '150', '159'], ['0044.pdf', 'K2003327', 2003, 44, 'POLICIES AND STAFFRULES', '35', '37'], ['0049.pdf', 'K2004328', 2004, 49, 'BALANCE SHEETS', '26', '34'], ['0049.pdf', 'K2004329', 2004, 49, 'POLICIES AND STAFFRULES', '53', '54'], ['0048.pdf', 'K2004330', 2004, 48, 'POLICIES AND STAFFRULES', '99', '100'], ['0052.pdf', 'K2005331', 2005, 52, 'BALANCE SHEETS', '19', '24'], ['0053.pdf', 'K2005332', 2005, 53, 'POLICIES AND STAFFRULES', '11', '11'], ['0052.pdf', 'K2005333', 2005, 52, 'POLICIES AND STAFFRULES', '98', '108'], ['0050.pdf', 'K2005334', 2005, 50, 'POLICIES AND STAFFRULES', '46', '51'], ['0050.pdf', 'K2005335', 2005, 50, 'POLICIES AND STAFFRULES', '64', '69'], ['0055.pdf', 'K2006336', 2006, 55, 'BALANCE SHEETS', '49', '56'], ['0054.pdf', 'K2006337', 2006, 54, 'POLICIES AND STAFFRULES', '34', '61'], ['0054.pdf', 'K2006338', 2006, 54, 'POLICIES AND STAFFRULES', '75', '77'], ['0057.pdf', 'K2007339', 2007, 57, 'BALANCE SHEETS', '21', '26'], ['0060.pdf', 'K2008340', 2008, 60, 'BALANCE SHEETS', '23', '28'], ['0060.pdf', 'K2008341', 2008, 60, 'POLICIES AND STAFFRULES', '41', '41'], ['0058.pdf', 'K2008342', 2008, 58, 'POLICIES AND STAFFRULES', '61', '69'], ['0061.pdf', 'K2009343', 2009, 61, 'BALANCE SHEETS', '107', '112'], ['0061.pdf', 'K2009344', 2009, 61, 'POLICIES AND STAFFRULES', '37', '86'], ['0061.pdf', 'K2009345', 2009, 61, 'POLICIES AND STAFFRULES', '99', '100'], ['0063.pdf', 'K2010346', 2010, 63, 'BALANCE SHEETS', '29', '34'], ['0064.pdf', 'K2010347', 2010, 64, 'POLICIES AND STAFFRULES', '57', '159'], ['0062.pdf', 'K2010348', 2010, 62, 'POLICIES AND STAFFRULES', '56', '71'], ['0061.pdf', 'K2011349', 2011, 61, 'BALANCE SHEETS', '13', '19'], ['0067.pdf', 'K2011350', 2011, 67, 'POLICIES AND STAFFRULES', '49', '50'], ['0069.pdf', 'K2012351', 2012, 69, 'BALANCE SHEETS', '49', '57'], ['0070.pdf', 'K2012352', 2012, 70, 'POLICIES AND STAFFRULES', '59', '93'], ['0070.pdf', 'K2012353', 2012, 70, 'POLICIES AND STAFFRULES', '84', '108'], ['0069.pdf', 'K2012354', 2012, 69, 'POLICIES AND STAFFRULES', '92', '94'], ['0076.pdf', 'K2013355', 2013, 76, 'BALANCE SHEETS', '287', '295'], ['0078.pdf', 'K2013356', 2013, 78, 'POLICIES AND STAFFRULES', '45', '55'], ['0077.pdf', 'K2013357', 2013, 77, 'POLICIES AND STAFFRULES', '58', '60'], ['0076.pdf', 'K2013358', 2013, 76, 'POLICIES AND STAFFRULES', '79', '81'], ['0076.pdf', 'K2013359', 2013, 76, 'POLICIES AND STAFFRULES', '177', '212'], ['0082.pdf', 'K2014360', 2014, 82, 'BALANCE SHEETS', '32', '40'], ['0083.pdf', 'K2014361', 2014, 83, 'POLICIES AND STAFFRULES', '52', '59'], ['0082.pdf', 'K2014362', 2014, 82, 'POLICIES AND STAFFRULES', '121', '299'], ['0088.pdf', 'K2015363', 2015, 88, 'BALANCE SHEETS', '134', '142'], ['0098.pdf', 'K2016364', 2016, 98, 'BALANCE SHEETS', '93', '101'], ['0096.pdf', 'K2016365', 2016, 96, 'POLICIES AND STAFFRULES', '40', '254'], ['0108.pdf', 'K2017366', 2017, 108, 'BALANCE SHEETS', '42', '51'], ['0108.pdf', 'K2017367', 2017, 108, 'POLICIES AND STAFFRULES', '62', '81'], ['0105.pdf', 'K2017368', 2017, 105, 'POLICIES AND STAFFRULES', '14', '15'], ['0115.pdf', 'K2018369', 2018, 115, 'BALANCE SHEETS', '106', '120'], ['0116.pdf', 'K2018370', 2018, 116, 'POLICIES AND STAFFRULES', '25', '44'], ['0115.pdf', 'K2018371', 2018, 115, 'POLICIES AND STAFFRULES', '18', '36'], ['0114.pdf', 'K2018372', 2018, 114, 'CHEQUE SIGNING POWER', '66', '67'], ['0121.pdf', 'K2019373', 2019, 121, 'BALANCE SHEETS', '113', '122'], ['0122.pdf', 'K2019374', 2019, 122, 'POLICIES AND STAFFRULES', '23', '29'], ['0121.pdf', 'K2019375', 2019, 121, 'POLICIES AND STAFFRULES', '48', '54'], ['purchase_order_RefNo_32.pdf', 'K2022406', 2022, 123, 'CHCEK', '1', '2'], ['RFP for HRMS 2021 Final.pdf', 'K2022407', 2022, 124, 'CHCK2', '1', '4'], ['RFP for HRMS 2021 Final.pdf', 'K2022408', 2022, 125, 'KUCHHV', '1', '5'], ['RFP for HRMS 2021 Final.pdf', 'K2022410', 2022, 126, 'DHINKACHIKA', '13', '15'], ['RFP for HRMS 2021 Final.pdf', 'K2022411', 2022, 126, 'BALANCE SHEETS', '1', '4'], ['RFP for HRMS 2021 Final.pdf', 'K2022412', 2022, 126, 'CHANGE IN MEMBERSHIP', '5', '6'], ['RFP for HRMS 2021 Final.pdf', 'K2022413', 2022, 126, 'POLICIES AND STAFFRULES', '7', '8'], ['RFP for HRMS 2021 Final.pdf', 'K2022414', 2022, 126, 'SANCTIONING POWER', '9', '10'], ['RFP for HRMS 2021 Final.pdf', 'K2022415', 2022, 126, 'CHEQUE SIGNING POWER', '11', '12']])">
+                            <option selected="selected" class="h-1/3" value="a" name="Years">Select Year</option>
+                        </select>
+
+                    </div>
+                    <div class="rounded text-indigo-900">Step 3* <br>
+                        Meeting Number: <br>
+                        <input class=" rounded-full w-full p-2 outline-none hover:bg-indigo-100 numeric integer decimeltext"
+                                    min="0" max="" class="your_class" type="number" id="mtn_no" name='mtn_no'>
+
+                    </div>
+                    <div class=" rounded text-indigo-900">Step 4* <br>
+                        <p>Entry Type:</p>
+
+                        <input disabled=true checked type="radio" id="submit1" name="submit" value="submit"
+                            onchange="fileValidation_to_pdf_key_submit()"> </input>
+                        <label for="submit">Fresh Entry</label><br>
+                        <input disabled=true type="radio" id="update" name="submit" value="update"
+                            onchange="fileValidation_to_pdf_key_update([['0004.pdf', 'K1984238', 1984, 4, 'BALANCE SHEETS', '46', '61'], ['0002.pdf', 'K1984239', 1984, 2, 'POLICIES AND STAFFRULES', '52', '57'], ['0002.pdf', 'K1984240', 1984, 2, 'POLICIES AND STAFFRULES', '69', '70'], ['0001.pdf', 'K1984241', 1984, 1, 'POLICIES AND STAFFRULES', '28', '32'], ['0002.pdf', 'K1984242', 1984, 2, 'CHEQUE SIGNING POWER', '23', '23'], ['0003.pdf', 'K1985243', 1985, 3, 'CHANGE IN MEMBERSHIP', '44', '46'], ['0003.pdf', 'K1985244', 1985, 3, 'POLICIES AND STAFFRULES', '58', '61'], ['0003.pdf', 'K1985245', 1985, 3, 'POLICIES AND STAFFRULES', '102', '176'], ['0003.pdf', 'K1985246', 1985, 3, 'POLICIES AND STAFFRULES', '212', '239'], ['0007.pdf', 'K1986247', 1986, 7, 'BALANCE SHEETS', '29', '35'], ['0005.pdf', 'K1986248', 1986, 5, 'CHANGE IN MEMBERSHIP', '19', '19'], ['0004.pdf', 'K1986249', 1986, 4, 'CHANGE IN MEMBERSHIP', '19', '22'], ['0005.pdf', 'K1986250', 1986, 5, 'POLICIES AND STAFFRULES', '78', '79'], ['0004.pdf', 'K1986251', 1986, 4, 'POLICIES AND STAFFRULES', '113', '139'], ['0009.pdf', 'K1987252', 1987, 9, 'BALANCE SHEETS', '36', '41'], ['0007.pdf', 'K1987253', 1987, 7, 'CHANGE IN MEMBERSHIP', '16', '18'], ['0006.pdf', 'K1987254', 1987, 6, 'CHANGE IN MEMBERSHIP', '58', '61'], ['0007.pdf', 'K1987255', 1987, 7, 'POLICIES AND STAFFRULES', '59', '66'], ['0006.pdf', 'K1987256', 1987, 6, 'POLICIES AND STAFFRULES', '62', '64'], ['0009.pdf', 'K1988257', 1988, 9, 'CHANGE IN MEMBERSHIP', '24', '27'], ['0009.pdf', 'K1988258', 1988, 9, 'POLICIES AND STAFFRULES', '46', '47'], ['0009.pdf', 'K1988259', 1988, 9, 'POLICIES AND STAFFRULES', '59', '80'], ['0008.pdf', 'K1988260', 1988, 8, 'POLICIES AND STAFFRULES', '23', '32'], ['0008.pdf', 'K1988261', 1988, 8, 'POLICIES AND STAFFRULES', '71', '75'], ['0008.pdf', 'K1988262', 1988, 8, 'CHEQUE SIGNING POWER', '88', '88'], ['0008.pdf', 'K1988263', 1988, 8, 'CHEQUE SIGNING POWER', '92', '93'], ['0011.pdf', 'K1989264', 1989, 11, 'BALANCE SHEETS', '65', '73'], ['0011.pdf', 'K1989265', 1989, 11, 'CHANGE IN MEMBERSHIP', '29', '37'], ['0010.pdf', 'K1989266', 1989, 10, 'CHANGE IN MEMBERSHIP', '60', '67'], ['0011.pdf', 'K1989267', 1989, 11, 'POLICIES AND STAFFRULES', '107', '108'], ['0010.pdf', 'K1989268', 1989, 10, 'POLICIES AND STAFFRULES', '119', '134'], ['0010.pdf', 'K1989269', 1989, 10, 'POLICIES AND STAFFRULES', '198', '202'], ['0013.pdf', 'K1990270', 1990, 13, 'BALANCE SHEETS', '39', '48'], ['0012.pdf', 'K1990271', 1990, 12, 'CHANGE IN MEMBERSHIP', '34', '38'], ['0013.pdf', 'K1990272', 1990, 13, 'POLICIES AND STAFFRULES', '58', '60'], ['0013.pdf', 'K1990273', 1990, 13, 'POLICIES AND STAFFRULES', '85', '90'], ['0014.pdf', 'K1991274', 1991, 14, 'BALANCE SHEETS', '31', '41'], ['0015.pdf', 'K1991275', 1991, 15, 'CHANGE IN MEMBERSHIP', '18', '22'], ['0014.pdf', 'K1991276', 1991, 14, 'CHEQUE SIGNING POWER', '43', '43'], ['0018.pdf', 'K1992277', 1992, 18, 'BALANCE SHEETS', '37', '45'], ['0018.pdf', 'K1992278', 1992, 18, 'CHANGE IN MEMBERSHIP', '24', '29'], ['0017.pdf', 'K1992279', 1992, 17, 'CHANGE IN MEMBERSHIP', '35', '36'], ['0016.pdf', 'K1992280', 1992, 16, 'CHANGE IN MEMBERSHIP', '26', '28'], ['0018.pdf', 'K1992281', 1992, 18, 'POLICIES AND STAFFRULES', '51', '52'], ['0018.pdf', 'K1992282', 1992, 18, 'POLICIES AND STAFFRULES', '76', '80'], ['0017.pdf', 'K1992283', 1992, 17, 'POLICIES AND STAFFRULES', '45', '56'], ['0016.pdf', 'K1992284', 1992, 16, 'POLICIES AND STAFFRULES', '31', '37'], ['0022.pdf', 'K1993285', 1993, 22, 'BALANCE SHEETS', '51', '62'], ['0021.pdf', 'K1993286', 1993, 21, 'BALANCE SHEETS', '55', '66'], ['0021.pdf', 'K1993287', 1993, 21, 'CHANGE IN MEMBERSHIP', '13', '17'], ['0019.pdf', 'K1993288', 1993, 19, 'CHANGE IN MEMBERSHIP', '13', '14'], ['0022.pdf', 'K1993289', 1993, 22, 'POLICIES AND STAFFRULES', '31', '43'], ['0022.pdf', 'K1993290', 1993, 22, 'POLICIES AND STAFFRULES', '75', '84'], ['0019.pdf', 'K1993291', 1993, 19, 'POLICIES AND STAFFRULES', '62', '64'], ['0022.pdf', 'K1993292', 1993, 22, 'CHEQUE SIGNING POWER', '30', '30'], ['0024.pdf', 'K1994293', 1994, 24, 'BALANCE SHEETS', '138', '155'], ['0024.pdf', 'K1994294', 1994, 24, 'POLICIES AND STAFFRULES', '124', '125'], ['0024.pdf', 'K1994295', 1994, 24, 'POLICIES AND STAFFRULES', '162', '162'], ['0024.pdf', 'K1994296', 1994, 24, 'POLICIES AND STAFFRULES', '168', '173'], ['0023.pdf', 'K1994297', 1994, 23, 'POLICIES AND STAFFRULES', '66', '68'], ['0026.pdf', 'K1995298', 1995, 26, 'BALANCE SHEETS', '119', '133'], ['0025.pdf', 'K1995299', 1995, 25, 'CHANGE IN MEMBERSHIP', '18', '23'], ['0025.pdf', 'K1995300', 1995, 25, 'POLICIES AND STAFFRULES', '85', '95'], ['0029.pdf', 'K1996301', 1996, 29, 'BALANCE SHEETS', '22', '29'], ['0029.pdf', 'K1996302', 1996, 29, 'CHANGE IN MEMBERSHIP', '102', '103'], ['0028.pdf', 'K1996303', 1996, 28, 'POLICIES AND STAFFRULES', '25', '31'], ['0027.pdf', 'K1996304', 1996, 27, 'POLICIES AND STAFFRULES', '31', '31'], ['0030.pdf', 'K1997305', 1997, 30, 'BALANCE SHEETS', '26', '33'], ['0030.pdf', 'K1997306', 1997, 30, 'CHANGE IN MEMBERSHIP', '23', '23'], ['0031.pdf', 'K1997307', 1997, 31, 'POLICIES AND STAFFRULES', '56', '65'], ['0031.pdf', 'K1997308', 1997, 31, 'POLICIES AND STAFFRULES', '71', '84'], ['0032.pdf', 'K1998309', 1998, 32, 'BALANCE SHEETS', '33', '40'], ['0033.pdf', 'K1998310', 1998, 33, 'CHANGE IN MEMBERSHIP', '23', '31'], ['0032.pdf', 'K1998311', 1998, 32, 'CHANGE IN MEMBERSHIP', '72', '72'], ['0033.pdf', 'K1998312', 1998, 33, 'POLICIES AND STAFFRULES', '77', '96'], ['0033.pdf', 'K1998313', 1998, 33, 'POLICIES AND STAFFRULES', '133', '140'], ['0034.pdf', 'K1999314', 1999, 34, 'BALANCE SHEETS', '52', '62'], ['0034.pdf', 'K1999315', 1999, 34, 'POLICIES AND STAFFRULES', '42', '49'], ['0034.pdf', 'K1999316', 1999, 34, 'POLICIES AND STAFFRULES', '72', '83'], ['0036.pdf', 'K2000317', 2000, 36, 'BALANCE SHEETS', '50', '60'], ['0036.pdf', 'K2000318', 2000, 36, 'CHANGE IN MEMBERSHIP', '18', '19'], ['0037.pdf', 'K2000319', 2000, 37, 'CHEQUE SIGNING POWER', '42', '43'], ['0040.pdf', 'K2001320', 2001, 40, 'BALANCE SHEETS', '25', '30'], ['0040.pdf', 'K2001321', 2001, 40, 'CHANGE IN MEMBERSHIP', '21', '21'], ['0043.pdf', 'K2002322', 2002, 43, 'BALANCE SHEETS', '26', '33'], ['0045.pdf', 'K2003323', 2003, 45, 'BALANCE SHEETS', '37', '44'], ['0044.pdf', 'K2003324', 2003, 44, 'CHANGE IN MEMBERSHIP', '18', '19'], ['0045.pdf', 'K2003325', 2003, 45, 'POLICIES AND STAFFRULES', '62', '67'], ['0045.pdf', 'K2003326', 2003, 45, 'POLICIES AND STAFFRULES', '150', '159'], ['0044.pdf', 'K2003327', 2003, 44, 'POLICIES AND STAFFRULES', '35', '37'], ['0049.pdf', 'K2004328', 2004, 49, 'BALANCE SHEETS', '26', '34'], ['0049.pdf', 'K2004329', 2004, 49, 'POLICIES AND STAFFRULES', '53', '54'], ['0048.pdf', 'K2004330', 2004, 48, 'POLICIES AND STAFFRULES', '99', '100'], ['0052.pdf', 'K2005331', 2005, 52, 'BALANCE SHEETS', '19', '24'], ['0053.pdf', 'K2005332', 2005, 53, 'POLICIES AND STAFFRULES', '11', '11'], ['0052.pdf', 'K2005333', 2005, 52, 'POLICIES AND STAFFRULES', '98', '108'], ['0050.pdf', 'K2005334', 2005, 50, 'POLICIES AND STAFFRULES', '46', '51'], ['0050.pdf', 'K2005335', 2005, 50, 'POLICIES AND STAFFRULES', '64', '69'], ['0055.pdf', 'K2006336', 2006, 55, 'BALANCE SHEETS', '49', '56'], ['0054.pdf', 'K2006337', 2006, 54, 'POLICIES AND STAFFRULES', '34', '61'], ['0054.pdf', 'K2006338', 2006, 54, 'POLICIES AND STAFFRULES', '75', '77'], ['0057.pdf', 'K2007339', 2007, 57, 'BALANCE SHEETS', '21', '26'], ['0060.pdf', 'K2008340', 2008, 60, 'BALANCE SHEETS', '23', '28'], ['0060.pdf', 'K2008341', 2008, 60, 'POLICIES AND STAFFRULES', '41', '41'], ['0058.pdf', 'K2008342', 2008, 58, 'POLICIES AND STAFFRULES', '61', '69'], ['0061.pdf', 'K2009343', 2009, 61, 'BALANCE SHEETS', '107', '112'], ['0061.pdf', 'K2009344', 2009, 61, 'POLICIES AND STAFFRULES', '37', '86'], ['0061.pdf', 'K2009345', 2009, 61, 'POLICIES AND STAFFRULES', '99', '100'], ['0063.pdf', 'K2010346', 2010, 63, 'BALANCE SHEETS', '29', '34'], ['0064.pdf', 'K2010347', 2010, 64, 'POLICIES AND STAFFRULES', '57', '159'], ['0062.pdf', 'K2010348', 2010, 62, 'POLICIES AND STAFFRULES', '56', '71'], ['0061.pdf', 'K2011349', 2011, 61, 'BALANCE SHEETS', '13', '19'], ['0067.pdf', 'K2011350', 2011, 67, 'POLICIES AND STAFFRULES', '49', '50'], ['0069.pdf', 'K2012351', 2012, 69, 'BALANCE SHEETS', '49', '57'], ['0070.pdf', 'K2012352', 2012, 70, 'POLICIES AND STAFFRULES', '59', '93'], ['0070.pdf', 'K2012353', 2012, 70, 'POLICIES AND STAFFRULES', '84', '108'], ['0069.pdf', 'K2012354', 2012, 69, 'POLICIES AND STAFFRULES', '92', '94'], ['0076.pdf', 'K2013355', 2013, 76, 'BALANCE SHEETS', '287', '295'], ['0078.pdf', 'K2013356', 2013, 78, 'POLICIES AND STAFFRULES', '45', '55'], ['0077.pdf', 'K2013357', 2013, 77, 'POLICIES AND STAFFRULES', '58', '60'], ['0076.pdf', 'K2013358', 2013, 76, 'POLICIES AND STAFFRULES', '79', '81'], ['0076.pdf', 'K2013359', 2013, 76, 'POLICIES AND STAFFRULES', '177', '212'], ['0082.pdf', 'K2014360', 2014, 82, 'BALANCE SHEETS', '32', '40'], ['0083.pdf', 'K2014361', 2014, 83, 'POLICIES AND STAFFRULES', '52', '59'], ['0082.pdf', 'K2014362', 2014, 82, 'POLICIES AND STAFFRULES', '121', '299'], ['0088.pdf', 'K2015363', 2015, 88, 'BALANCE SHEETS', '134', '142'], ['0098.pdf', 'K2016364', 2016, 98, 'BALANCE SHEETS', '93', '101'], ['0096.pdf', 'K2016365', 2016, 96, 'POLICIES AND STAFFRULES', '40', '254'], ['0108.pdf', 'K2017366', 2017, 108, 'BALANCE SHEETS', '42', '51'], ['0108.pdf', 'K2017367', 2017, 108, 'POLICIES AND STAFFRULES', '62', '81'], ['0105.pdf', 'K2017368', 2017, 105, 'POLICIES AND STAFFRULES', '14', '15'], ['0115.pdf', 'K2018369', 2018, 115, 'BALANCE SHEETS', '106', '120'], ['0116.pdf', 'K2018370', 2018, 116, 'POLICIES AND STAFFRULES', '25', '44'], ['0115.pdf', 'K2018371', 2018, 115, 'POLICIES AND STAFFRULES', '18', '36'], ['0114.pdf', 'K2018372', 2018, 114, 'CHEQUE SIGNING POWER', '66', '67'], ['0121.pdf', 'K2019373', 2019, 121, 'BALANCE SHEETS', '113', '122'], ['0122.pdf', 'K2019374', 2019, 122, 'POLICIES AND STAFFRULES', '23', '29'], ['0121.pdf', 'K2019375', 2019, 121, 'POLICIES AND STAFFRULES', '48', '54'], ['purchase_order_RefNo_32.pdf', 'K2022406', 2022, 123, 'CHCEK', '1', '2'], ['RFP for HRMS 2021 Final.pdf', 'K2022407', 2022, 124, 'CHCK2', '1', '4'], ['RFP for HRMS 2021 Final.pdf', 'K2022408', 2022, 125, 'KUCHHV', '1', '5'], ['RFP for HRMS 2021 Final.pdf', 'K2022410', 2022, 126, 'DHINKACHIKA', '13', '15'], ['RFP for HRMS 2021 Final.pdf', 'K2022411', 2022, 126, 'BALANCE SHEETS', '1', '4'], ['RFP for HRMS 2021 Final.pdf', 'K2022412', 2022, 126, 'CHANGE IN MEMBERSHIP', '5', '6'], ['RFP for HRMS 2021 Final.pdf', 'K2022413', 2022, 126, 'POLICIES AND STAFFRULES', '7', '8'], ['RFP for HRMS 2021 Final.pdf', 'K2022414', 2022, 126, 'SANCTIONING POWER', '9', '10'], ['RFP for HRMS 2021 Final.pdf', 'K2022415', 2022, 126, 'CHEQUE SIGNING POWER', '11', '12']])" > </input>
+                        <label for="update">Update Entry</label>
+
+
+                    </div>
+                    <div class="rounded text-indigo-900" id='step3test' style="display:none;">
+                        Step 4** <br>
+                        PDF Code : <br><select class="rounded-full bg-indigo-100  px-4 py-2 outline-none" value="key"
+                            name="pdf_key" id="pdf_key" onchange="fileValidation_to_pdf_key_select([['0004.pdf', 'K1984238', 1984, 4, 'BALANCE SHEETS', '46', '61'], ['0002.pdf', 'K1984239', 1984, 2, 'POLICIES AND STAFFRULES', '52', '57'], ['0002.pdf', 'K1984240', 1984, 2, 'POLICIES AND STAFFRULES', '69', '70'], ['0001.pdf', 'K1984241', 1984, 1, 'POLICIES AND STAFFRULES', '28', '32'], ['0002.pdf', 'K1984242', 1984, 2, 'CHEQUE SIGNING POWER', '23', '23'], ['0003.pdf', 'K1985243', 1985, 3, 'CHANGE IN MEMBERSHIP', '44', '46'], ['0003.pdf', 'K1985244', 1985, 3, 'POLICIES AND STAFFRULES', '58', '61'], ['0003.pdf', 'K1985245', 1985, 3, 'POLICIES AND STAFFRULES', '102', '176'], ['0003.pdf', 'K1985246', 1985, 3, 'POLICIES AND STAFFRULES', '212', '239'], ['0007.pdf', 'K1986247', 1986, 7, 'BALANCE SHEETS', '29', '35'], ['0005.pdf', 'K1986248', 1986, 5, 'CHANGE IN MEMBERSHIP', '19', '19'], ['0004.pdf', 'K1986249', 1986, 4, 'CHANGE IN MEMBERSHIP', '19', '22'], ['0005.pdf', 'K1986250', 1986, 5, 'POLICIES AND STAFFRULES', '78', '79'], ['0004.pdf', 'K1986251', 1986, 4, 'POLICIES AND STAFFRULES', '113', '139'], ['0009.pdf', 'K1987252', 1987, 9, 'BALANCE SHEETS', '36', '41'], ['0007.pdf', 'K1987253', 1987, 7, 'CHANGE IN MEMBERSHIP', '16', '18'], ['0006.pdf', 'K1987254', 1987, 6, 'CHANGE IN MEMBERSHIP', '58', '61'], ['0007.pdf', 'K1987255', 1987, 7, 'POLICIES AND STAFFRULES', '59', '66'], ['0006.pdf', 'K1987256', 1987, 6, 'POLICIES AND STAFFRULES', '62', '64'], ['0009.pdf', 'K1988257', 1988, 9, 'CHANGE IN MEMBERSHIP', '24', '27'], ['0009.pdf', 'K1988258', 1988, 9, 'POLICIES AND STAFFRULES', '46', '47'], ['0009.pdf', 'K1988259', 1988, 9, 'POLICIES AND STAFFRULES', '59', '80'], ['0008.pdf', 'K1988260', 1988, 8, 'POLICIES AND STAFFRULES', '23', '32'], ['0008.pdf', 'K1988261', 1988, 8, 'POLICIES AND STAFFRULES', '71', '75'], ['0008.pdf', 'K1988262', 1988, 8, 'CHEQUE SIGNING POWER', '88', '88'], ['0008.pdf', 'K1988263', 1988, 8, 'CHEQUE SIGNING POWER', '92', '93'], ['0011.pdf', 'K1989264', 1989, 11, 'BALANCE SHEETS', '65', '73'], ['0011.pdf', 'K1989265', 1989, 11, 'CHANGE IN MEMBERSHIP', '29', '37'], ['0010.pdf', 'K1989266', 1989, 10, 'CHANGE IN MEMBERSHIP', '60', '67'], ['0011.pdf', 'K1989267', 1989, 11, 'POLICIES AND STAFFRULES', '107', '108'], ['0010.pdf', 'K1989268', 1989, 10, 'POLICIES AND STAFFRULES', '119', '134'], ['0010.pdf', 'K1989269', 1989, 10, 'POLICIES AND STAFFRULES', '198', '202'], ['0013.pdf', 'K1990270', 1990, 13, 'BALANCE SHEETS', '39', '48'], ['0012.pdf', 'K1990271', 1990, 12, 'CHANGE IN MEMBERSHIP', '34', '38'], ['0013.pdf', 'K1990272', 1990, 13, 'POLICIES AND STAFFRULES', '58', '60'], ['0013.pdf', 'K1990273', 1990, 13, 'POLICIES AND STAFFRULES', '85', '90'], ['0014.pdf', 'K1991274', 1991, 14, 'BALANCE SHEETS', '31', '41'], ['0015.pdf', 'K1991275', 1991, 15, 'CHANGE IN MEMBERSHIP', '18', '22'], ['0014.pdf', 'K1991276', 1991, 14, 'CHEQUE SIGNING POWER', '43', '43'], ['0018.pdf', 'K1992277', 1992, 18, 'BALANCE SHEETS', '37', '45'], ['0018.pdf', 'K1992278', 1992, 18, 'CHANGE IN MEMBERSHIP', '24', '29'], ['0017.pdf', 'K1992279', 1992, 17, 'CHANGE IN MEMBERSHIP', '35', '36'], ['0016.pdf', 'K1992280', 1992, 16, 'CHANGE IN MEMBERSHIP', '26', '28'], ['0018.pdf', 'K1992281', 1992, 18, 'POLICIES AND STAFFRULES', '51', '52'], ['0018.pdf', 'K1992282', 1992, 18, 'POLICIES AND STAFFRULES', '76', '80'], ['0017.pdf', 'K1992283', 1992, 17, 'POLICIES AND STAFFRULES', '45', '56'], ['0016.pdf', 'K1992284', 1992, 16, 'POLICIES AND STAFFRULES', '31', '37'], ['0022.pdf', 'K1993285', 1993, 22, 'BALANCE SHEETS', '51', '62'], ['0021.pdf', 'K1993286', 1993, 21, 'BALANCE SHEETS', '55', '66'], ['0021.pdf', 'K1993287', 1993, 21, 'CHANGE IN MEMBERSHIP', '13', '17'], ['0019.pdf', 'K1993288', 1993, 19, 'CHANGE IN MEMBERSHIP', '13', '14'], ['0022.pdf', 'K1993289', 1993, 22, 'POLICIES AND STAFFRULES', '31', '43'], ['0022.pdf', 'K1993290', 1993, 22, 'POLICIES AND STAFFRULES', '75', '84'], ['0019.pdf', 'K1993291', 1993, 19, 'POLICIES AND STAFFRULES', '62', '64'], ['0022.pdf', 'K1993292', 1993, 22, 'CHEQUE SIGNING POWER', '30', '30'], ['0024.pdf', 'K1994293', 1994, 24, 'BALANCE SHEETS', '138', '155'], ['0024.pdf', 'K1994294', 1994, 24, 'POLICIES AND STAFFRULES', '124', '125'], ['0024.pdf', 'K1994295', 1994, 24, 'POLICIES AND STAFFRULES', '162', '162'], ['0024.pdf', 'K1994296', 1994, 24, 'POLICIES AND STAFFRULES', '168', '173'], ['0023.pdf', 'K1994297', 1994, 23, 'POLICIES AND STAFFRULES', '66', '68'], ['0026.pdf', 'K1995298', 1995, 26, 'BALANCE SHEETS', '119', '133'], ['0025.pdf', 'K1995299', 1995, 25, 'CHANGE IN MEMBERSHIP', '18', '23'], ['0025.pdf', 'K1995300', 1995, 25, 'POLICIES AND STAFFRULES', '85', '95'], ['0029.pdf', 'K1996301', 1996, 29, 'BALANCE SHEETS', '22', '29'], ['0029.pdf', 'K1996302', 1996, 29, 'CHANGE IN MEMBERSHIP', '102', '103'], ['0028.pdf', 'K1996303', 1996, 28, 'POLICIES AND STAFFRULES', '25', '31'], ['0027.pdf', 'K1996304', 1996, 27, 'POLICIES AND STAFFRULES', '31', '31'], ['0030.pdf', 'K1997305', 1997, 30, 'BALANCE SHEETS', '26', '33'], ['0030.pdf', 'K1997306', 1997, 30, 'CHANGE IN MEMBERSHIP', '23', '23'], ['0031.pdf', 'K1997307', 1997, 31, 'POLICIES AND STAFFRULES', '56', '65'], ['0031.pdf', 'K1997308', 1997, 31, 'POLICIES AND STAFFRULES', '71', '84'], ['0032.pdf', 'K1998309', 1998, 32, 'BALANCE SHEETS', '33', '40'], ['0033.pdf', 'K1998310', 1998, 33, 'CHANGE IN MEMBERSHIP', '23', '31'], ['0032.pdf', 'K1998311', 1998, 32, 'CHANGE IN MEMBERSHIP', '72', '72'], ['0033.pdf', 'K1998312', 1998, 33, 'POLICIES AND STAFFRULES', '77', '96'], ['0033.pdf', 'K1998313', 1998, 33, 'POLICIES AND STAFFRULES', '133', '140'], ['0034.pdf', 'K1999314', 1999, 34, 'BALANCE SHEETS', '52', '62'], ['0034.pdf', 'K1999315', 1999, 34, 'POLICIES AND STAFFRULES', '42', '49'], ['0034.pdf', 'K1999316', 1999, 34, 'POLICIES AND STAFFRULES', '72', '83'], ['0036.pdf', 'K2000317', 2000, 36, 'BALANCE SHEETS', '50', '60'], ['0036.pdf', 'K2000318', 2000, 36, 'CHANGE IN MEMBERSHIP', '18', '19'], ['0037.pdf', 'K2000319', 2000, 37, 'CHEQUE SIGNING POWER', '42', '43'], ['0040.pdf', 'K2001320', 2001, 40, 'BALANCE SHEETS', '25', '30'], ['0040.pdf', 'K2001321', 2001, 40, 'CHANGE IN MEMBERSHIP', '21', '21'], ['0043.pdf', 'K2002322', 2002, 43, 'BALANCE SHEETS', '26', '33'], ['0045.pdf', 'K2003323', 2003, 45, 'BALANCE SHEETS', '37', '44'], ['0044.pdf', 'K2003324', 2003, 44, 'CHANGE IN MEMBERSHIP', '18', '19'], ['0045.pdf', 'K2003325', 2003, 45, 'POLICIES AND STAFFRULES', '62', '67'], ['0045.pdf', 'K2003326', 2003, 45, 'POLICIES AND STAFFRULES', '150', '159'], ['0044.pdf', 'K2003327', 2003, 44, 'POLICIES AND STAFFRULES', '35', '37'], ['0049.pdf', 'K2004328', 2004, 49, 'BALANCE SHEETS', '26', '34'], ['0049.pdf', 'K2004329', 2004, 49, 'POLICIES AND STAFFRULES', '53', '54'], ['0048.pdf', 'K2004330', 2004, 48, 'POLICIES AND STAFFRULES', '99', '100'], ['0052.pdf', 'K2005331', 2005, 52, 'BALANCE SHEETS', '19', '24'], ['0053.pdf', 'K2005332', 2005, 53, 'POLICIES AND STAFFRULES', '11', '11'], ['0052.pdf', 'K2005333', 2005, 52, 'POLICIES AND STAFFRULES', '98', '108'], ['0050.pdf', 'K2005334', 2005, 50, 'POLICIES AND STAFFRULES', '46', '51'], ['0050.pdf', 'K2005335', 2005, 50, 'POLICIES AND STAFFRULES', '64', '69'], ['0055.pdf', 'K2006336', 2006, 55, 'BALANCE SHEETS', '49', '56'], ['0054.pdf', 'K2006337', 2006, 54, 'POLICIES AND STAFFRULES', '34', '61'], ['0054.pdf', 'K2006338', 2006, 54, 'POLICIES AND STAFFRULES', '75', '77'], ['0057.pdf', 'K2007339', 2007, 57, 'BALANCE SHEETS', '21', '26'], ['0060.pdf', 'K2008340', 2008, 60, 'BALANCE SHEETS', '23', '28'], ['0060.pdf', 'K2008341', 2008, 60, 'POLICIES AND STAFFRULES', '41', '41'], ['0058.pdf', 'K2008342', 2008, 58, 'POLICIES AND STAFFRULES', '61', '69'], ['0061.pdf', 'K2009343', 2009, 61, 'BALANCE SHEETS', '107', '112'], ['0061.pdf', 'K2009344', 2009, 61, 'POLICIES AND STAFFRULES', '37', '86'], ['0061.pdf', 'K2009345', 2009, 61, 'POLICIES AND STAFFRULES', '99', '100'], ['0063.pdf', 'K2010346', 2010, 63, 'BALANCE SHEETS', '29', '34'], ['0064.pdf', 'K2010347', 2010, 64, 'POLICIES AND STAFFRULES', '57', '159'], ['0062.pdf', 'K2010348', 2010, 62, 'POLICIES AND STAFFRULES', '56', '71'], ['0061.pdf', 'K2011349', 2011, 61, 'BALANCE SHEETS', '13', '19'], ['0067.pdf', 'K2011350', 2011, 67, 'POLICIES AND STAFFRULES', '49', '50'], ['0069.pdf', 'K2012351', 2012, 69, 'BALANCE SHEETS', '49', '57'], ['0070.pdf', 'K2012352', 2012, 70, 'POLICIES AND STAFFRULES', '59', '93'], ['0070.pdf', 'K2012353', 2012, 70, 'POLICIES AND STAFFRULES', '84', '108'], ['0069.pdf', 'K2012354', 2012, 69, 'POLICIES AND STAFFRULES', '92', '94'], ['0076.pdf', 'K2013355', 2013, 76, 'BALANCE SHEETS', '287', '295'], ['0078.pdf', 'K2013356', 2013, 78, 'POLICIES AND STAFFRULES', '45', '55'], ['0077.pdf', 'K2013357', 2013, 77, 'POLICIES AND STAFFRULES', '58', '60'], ['0076.pdf', 'K2013358', 2013, 76, 'POLICIES AND STAFFRULES', '79', '81'], ['0076.pdf', 'K2013359', 2013, 76, 'POLICIES AND STAFFRULES', '177', '212'], ['0082.pdf', 'K2014360', 2014, 82, 'BALANCE SHEETS', '32', '40'], ['0083.pdf', 'K2014361', 2014, 83, 'POLICIES AND STAFFRULES', '52', '59'], ['0082.pdf', 'K2014362', 2014, 82, 'POLICIES AND STAFFRULES', '121', '299'], ['0088.pdf', 'K2015363', 2015, 88, 'BALANCE SHEETS', '134', '142'], ['0098.pdf', 'K2016364', 2016, 98, 'BALANCE SHEETS', '93', '101'], ['0096.pdf', 'K2016365', 2016, 96, 'POLICIES AND STAFFRULES', '40', '254'], ['0108.pdf', 'K2017366', 2017, 108, 'BALANCE SHEETS', '42', '51'], ['0108.pdf', 'K2017367', 2017, 108, 'POLICIES AND STAFFRULES', '62', '81'], ['0105.pdf', 'K2017368', 2017, 105, 'POLICIES AND STAFFRULES', '14', '15'], ['0115.pdf', 'K2018369', 2018, 115, 'BALANCE SHEETS', '106', '120'], ['0116.pdf', 'K2018370', 2018, 116, 'POLICIES AND STAFFRULES', '25', '44'], ['0115.pdf', 'K2018371', 2018, 115, 'POLICIES AND STAFFRULES', '18', '36'], ['0114.pdf', 'K2018372', 2018, 114, 'CHEQUE SIGNING POWER', '66', '67'], ['0121.pdf', 'K2019373', 2019, 121, 'BALANCE SHEETS', '113', '122'], ['0122.pdf', 'K2019374', 2019, 122, 'POLICIES AND STAFFRULES', '23', '29'], ['0121.pdf', 'K2019375', 2019, 121, 'POLICIES AND STAFFRULES', '48', '54'], ['purchase_order_RefNo_32.pdf', 'K2022406', 2022, 123, 'CHCEK', '1', '2'], ['RFP for HRMS 2021 Final.pdf', 'K2022407', 2022, 124, 'CHCK2', '1', '4'], ['RFP for HRMS 2021 Final.pdf', 'K2022408', 2022, 125, 'KUCHHV', '1', '5'], ['RFP for HRMS 2021 Final.pdf', 'K2022410', 2022, 126, 'DHINKACHIKA', '13', '15'], ['RFP for HRMS 2021 Final.pdf', 'K2022411', 2022, 126, 'BALANCE SHEETS', '1', '4'], ['RFP for HRMS 2021 Final.pdf', 'K2022412', 2022, 126, 'CHANGE IN MEMBERSHIP', '5', '6'], ['RFP for HRMS 2021 Final.pdf', 'K2022413', 2022, 126, 'POLICIES AND STAFFRULES', '7', '8'], ['RFP for HRMS 2021 Final.pdf', 'K2022414', 2022, 126, 'SANCTIONING POWER', '9', '10'], ['RFP for HRMS 2021 Final.pdf', 'K2022415', 2022, 126, 'CHEQUE SIGNING POWER', '11', '12']])">
+                            <option selected="selected" class="h-1/3" value="key_1" name="pdf_key">Select PDF key
+                            </option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+
+                <table style="display:;" class="table-fixed uppercase rounded text-indigo-900" id="table">
+                    <p class=" rounded text-indigo-900">Step 5*</p>
+                    <thead>
+                        <tr>
+
+                            
+                            <th class="bg-indigo-500 opacity-500  rounded uppercase text-white  px-4 py-2 w-1/2">
+                                Agenda Topic</th>
+                            <th class="bg-indigo-500 opacity-500  rounded uppercase text-white  px-4 py-2 w-1/10">
+                                START PAGE</th>
+                            <th class="bg-indigo-500 opacity-500  rounded uppercase text-white  px-4 py-2 w-1/10">
+                                END PAGE</th>
+                            <th class="bg-indigo-500 opacity-500  rounded uppercase text-white  px-4 py-2 w-1/10">
+                                Add/Remove</th>
+                            <th class="bg-indigo-500 opacity-500  rounded uppercase text-white  px-4 py-2 w-1/10">
+                                Verify</th>
+                        </tr>
+                    </thead>
+                    <tbody style="display:;" class="uppercase" id="tbody_1">
+                        <!-- <x-data="{ filetype: [['bal_sht','Balance Sheets'], ['chg_n_mem','Change In Membership'], ['pol_nd_stfrls','Policies And StaffRules'],['sac_pow','Sanctioning Power'],['chq_sign_pow','Cheque Signing Power']]}"> -->
+                        <!-- <template x-for="file in filetype"> -->
+                        <tr class="bg-indigo-200  text-indigo-900">
+                            
+
+                            <td class=" hover:bg-indigo-100">
+                                <div class=" flex justify-between w-full items-center hover:bg-indigo-100">
+                                    <!-- <span class="text-lg font-normal" x-text="file[1]" ></span> -->
+                                    <!-- <input type="checkbox" > -->
+                                    Balance Sheets
+                                </div>
+                            </td>
+                            <td>
+                                
+
+                                <input class="w-full p-2 outline-none hover:bg-indigo-100 numeric integer decimeltext"
+                                    min="0" max="" class="your_class" type="number" id="s_pg0" name='bal_sht0'
+                                    
+                                    onchange="fileValidation_to_s_page0()">
+                                
+
+                                </input>
+
+                            </td>
+                            <td><input class="w-full p-2 outline-none hover:bg-indigo-100 numeric integer decimeltext"
+                                    min="0" max="" class="your_class" type="number" id="e_pg0" name='bal_sht1'
+                                    onchange="fileValidation_number0()">
+                            </td>
+
+                            <td><input disabled=true
+                                    class=" bg-slate-400 opacity-500 rounded uppercase text-white px-4 py-2 "
+                                    type="button" value="No Action" /></td>
+                            <td><input disabled=true
+                                    class=" bg-slate-400 opacity-500 rounded uppercase text-white px-4 py-2 "
+                                    type="button" value="No Action" /></td>
+
+                        </tr>
+
+                        <tr class="bg-indigo-200  text-indigo-900">
+                            
+                            <td class=" hover:bg-indigo-100">
+                                <div class=" flex justify-between  items-center hover:bg-indigo-100">
+                                    <!-- <span class="text-lg font-normal" x-text="file[1]" ></span> -->
+                                    <!-- <input type="checkbox" > -->
+                                    Change In Membership
+                                </div>
+                            </td>
+                            <td><input class="w-full p-2 outline-none hover:bg-indigo-100 numeric integer decimeltext"
+                                    min="0" max="" step="0" type="number" id="s_pg1" name='chg_n_mem0'
+                                    onchange="fileValidation_to_s_page1()"> </td>
+                            <td><input class="w-full p-2 outline-none hover:bg-indigo-100 numeric integer decimeltext"
+                                    min="0" max="" type="number" id="e_pg1" name='chg_n_mem1'
+                                    onchange="fileValidation_number1()">
+                            </td>
+                            <td><input disabled=true
+                                    class=" bg-slate-400 opacity-500 rounded uppercase text-white px-4 py-2 "
+                                    type="button" value="No Action" /></td>
+                            <td><input disabled=true
+                                    class="  bg-slate-400 opacity-500 rounded uppercase text-white px-4 py-2 "
+                                    type="button" value="No Action" /></td>
+                        </tr>
+
+                        <tr class="bg-indigo-200  text-indigo-900">
+                            
+                            <td class=" hover:bg-indigo-100">
+                                <div class=" flex justify-between  items-center hover:bg-indigo-100">
+                                    <!-- <span class="text-lg font-normal" x-text="file[1]" ></span> -->
+                                    <!-- <input type="checkbox" > -->
+                                    Policies And StaffRules
+                                </div>
+                            </td>
+                            <td><input class="w-full p-2 outline-none hover:bg-indigo-100 numeric integer decimeltext"
+                                    min="0" max="" type="number" id="s_pg2" name='pol_nd_stfrls0'
+                                    onchange="fileValidation_to_s_page2()">
+                            </td>
+                            <td><input class="w-full p-2 outline-none hover:bg-indigo-100 numeric integer decimeltext"
+                                    min="0" max="" type="number" id="e_pg2" name='pol_nd_stfrls1'
+                                    onchange="fileValidation_number2()">
+                            </td>
+                            <td><input disabled=true
+                                    class="  bg-slate-400 opacity-500 rounded uppercase text-white px-4 py-2 "
+                                    type="button" value="No Action" /></td>
+                            <td><input disabled=true
+                                    class="  bg-slate-400 opacity-500 rounded uppercase text-white px-4 py-2 "
+                                    type="button" value="No Action" /></td>
+                        </tr>
+
+                        <tr class="bg-indigo-200  text-indigo-900">
+                            
+                            <td class=" hover:bg-indigo-100">
+                                <div class=" flex justify-between w-full items-center hover:bg-indigo-100">
+                                    <!-- <span class="text-lg font-normal" x-text="file[1]" ></span> -->
+                                    <!-- <input type="checkbox" > -->
+                                    Sanctioning Power
+                                </div>
+                            </td>
+                            <td><input class="w-full p-2 outline-none hover:bg-indigo-100 numeric integer decimeltext"
+                                    min="0" max="" type="number" id="s_pg3" name='sac_pow0'
+                                    onchange="fileValidation_to_s_page3()">
+                            </td>
+                            <td><input class="w-full p-2 outline-none hover:bg-indigo-100 numeric integer decimeltext"
+                                    min="0" max="" type="number" id="e_pg3" name='sac_pow1'
+                                    onchange="fileValidation_number3()">
+                            </td>
+
+                            <td><input disabled=true
+                                    class=" bg-slate-400 opacity-500 rounded uppercase text-white px-4 py-2 "
+                                    type="button" value="No Action" /></td>
+                            <td><input disabled=true
+                                    class="  bg-slate-400 opacity-500 rounded uppercase text-white px-4 py-2 "
+                                    type="button" value="No Action" /></td>
+                        </tr>
+
+                        <tr class="bg-indigo-200  text-indigo-900">
+                            
+                            <td class=" hover:bg-indigo-100">
+                                <div class=" flex justify-between w-full items-center hover:bg-indigo-100">
+                                    <!-- <span class="text-lg font-normal" x-text="file[1]" ></span> -->
+                                    <!-- <input type="checkbox" > -->
+                                    Cheque Signing Power
+                                </div>
+                            </td>
+                            <td><input class="w-full p-2 outline-none hover:bg-indigo-100 numeric integer decimeltext"
+                                    min="0" max="number" type="number" id="s_pg4" name='chq_sign_pow0'
+                                    onchange="fileValidation_to_s_page4()"> </td>
+                            <td><input class="w-full p-2 outline-none hover:bg-indigo-100 numeric integer decimeltext"
+                                    min="0" max="" type="number" id="e_pg4" name='chq_sign_pow1'
+                                    onchange="fileValidation_number4()">
+                            </td>
+
+                            <td><input disabled=true
+                                    class=" bg-slate-400 opacity-500 rounded uppercase text-white px-4 py-2 "
+                                    type="button" value="No Action" /></td>
+                            <td><input disabled=true
+                                    class="  bg-slate-400 opacity-500 rounded uppercase text-white px-4 py-2 "
+                                    type="button" value="No Action" /></td>
+                        </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class=" mx-auto px-8" id="my-div a">
+
+                <table style="display:;" class="table-fixed uppercase rounded text-indigo-900" id="tblCustomers">
+                    
+                    <thead>
+                        <tr>
+
+                            
+                            <th class="bg-indigo-500 opacity-500  rounded uppercase text-white  px-4 py-2 w-1/2"></th>
+                            <th class="bg-indigo-500 opacity-500  rounded uppercase text-white  px-4 py-2 w-1/10"></th>
+                            <th class="bg-indigo-500 opacity-500  rounded uppercase text-white  px-4 py-2 w-1/10"></th>
+                            <th class="bg-indigo-500 opacity-500  rounded uppercase text-white  px-4 py-2 w-1/10"></th>
+                            <th class="bg-indigo-500 opacity-500  rounded uppercase text-white  px-4 py-2 w-1/10"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                    <tfoot style="display:;" class="table-auto uppercase rounded text-indigo-900" id="tfoot_1">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="bA1pwtgDjCSP0Q6Eeyc7fVNMCJWvgAbcni4PVM5XRXuWQAO6YXN04gi3AfHltnFx">
+                        <tr class="bg-indigo-200  text-indigo-900">
+
+                            
+                            
+                            <td class=" hover:bg-indigo-100 w-1/2  space-x-4">
+                                <select id="txtName" class=" w-2/5 p-2 outline-none hover:bg-indigo-100 "
+                                    onchange="fileValidation_othrs_to_desc()">
+                                    <option selected="selected" class="h-1/3" value="key_1" name="pdf_key">Select Agenda
+                                        Topic</option>
+                                    
+                                    <option>BALANCE SHEETS </option>
+                                    
+                                    <option>POLICIES AND STAFFRULES </option>
+                                    
+                                    <option>CHEQUE SIGNING POWER </option>
+                                    
+                                    <option>CHANGE IN MEMBERSHIP </option>
+                                    
+                                    <option>CHCEK </option>
+                                    
+                                    <option>CHCK2 </option>
+                                    
+                                    <option>KUCHHV </option>
+                                    
+                                    <option>DHINKACHIKA </option>
+                                    
+                                    <option>SANCTIONING POWER </option>
+                                    
+                                    
+                                    <option class="h-1/3 pr-0.5" value="Others" name="pdf_key">Others  
+                                        <input style="display:none;" type="text" id="descName" name="descName"
+                                            class=" w-2/5  p-2 outline-none hover:bg-indigo-100 "
+                                            placeholder="Please Do Mention Agenda Topic" />
+                                    </option>
+
+
+                            </td>
+                            <td class="w-1/10"><input type="number" min="0" max="" id="txtCnt" 
+                                    class="w-full p-2 outline-none hover:bg-indigo-100 numeric integer decimeltext"
+                                    onchange="fileValidation_number_dynamic()" /></td>
+                            <td class="w-1/10"><input type="number" min="0" max="" id="txtCnt1" 
+                                    class="w-full p-2 outline-none hover:bg-indigo-100 numeric integer decimeltext"
+                                    onchange="fileValidation_number_dynamic()" /></td>
+                            <td class="w-1/10 flex justify-center"><input
+                                    class=" bg-indigo-500 opacity-500 hover:bg-indigo-400 rounded uppercase text-white  px-4 py-2 hover:-translate-y-1 transition ease-in-out delay-150 hover:scale-110 duration-300"
+                                    type="button" onclick="Add(), fileValidation_number_dynamic()" value="Add" /></td>
+                            <td class="w-1/10"></td>
+
+                            
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            
+
+
+            <div class=" mx-auto flex justify-center gap-2 py-4 text-center  w-full">
+                <!-- <input type="hidden" name="csrfmiddlewaretoken" value="bA1pwtgDjCSP0Q6Eeyc7fVNMCJWvgAbcni4PVM5XRXuWQAO6YXN04gi3AfHltnFx"> -->
+                <input type="hidden" name="csrfmiddlewaretoken" value="bA1pwtgDjCSP0Q6Eeyc7fVNMCJWvgAbcni4PVM5XRXuWQAO6YXN04gi3AfHltnFx">
+                
+                <input type="submit" name="submit" id="submit" value="Submit" onclick="Submit_check(), submition()"
+                    class="bg-indigo-500 opacity-500 hover:bg-indigo-400 rounded uppercase text-white  px-4 py-2 hover:-translate-y-1 transition ease-in-out delay-150 hover:scale-110 duration-300" />
+
+                <!-- <input type="hidden" name="csrfmiddlewaretoken" value="bA1pwtgDjCSP0Q6Eeyc7fVNMCJWvgAbcni4PVM5XRXuWQAO6YXN04gi3AfHltnFx"> -->
+
+
+                <!-- <input  type="submit" name="update" id="update" value="UPDATE"  onclick="Submit_check()"
+                class=" w-22 bg-indigo-500 opacity-500 hover:bg-indigo-400 rounded uppercase text-white  px-4 py-2 hover:-translate-y-1 transition ease-in-out delay-150 hover:scale-110 duration-300"></input> -->
+            </div>
+
+            <input type="hidden" name="csrfmiddlewaretoken" value="bA1pwtgDjCSP0Q6Eeyc7fVNMCJWvgAbcni4PVM5XRXuWQAO6YXN04gi3AfHltnFx">
+
+        
+        <div class=" mx-auto flex justify-center gap-2 py-4 text-center  w-full">
+
+            
+            <a href = '/'  type="submit" name="submit" id="submit" value="Submit"
+                class="bg-indigo-500 opacity-500 hover:bg-indigo-400 rounded uppercase text-white  px-4 py-2 hover:-translate-y-1 transition ease-in-out delay-150 hover:scale-110 duration-300">Log
+                out</a>
+        </div>
+        </div>
+         
+            
+            
+            
+
+              
+            
+            
+            
+            
+            
+        
+    </form>
+</body>
+
+
+</html>

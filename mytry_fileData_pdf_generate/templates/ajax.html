@@ -1,0 +1,87 @@
+//Insert data
+$("#btnsave").click(function () {
+    console.log("Save Button");
+
+    let id = $("#stuid").val();
+    let nm = $("#myFile").val();
+    let em = $("#Years_1").val();
+    let pw = $("#mtn_no").val();
+    let csr = $("input[name = csrfmiddlewaretoken]").val();
+    if (nm == "") {
+        console.log("Please Enter Name");
+    } else if (em == "") {
+        console.log("Please Enter Email");
+    } else if (pw == "") {
+        console.log("Please Enter Password");
+    } else {
+        console.log(nm);
+        console.log(em);
+        console.log(pw);
+        mydata = { stuid:id, name: nm, email: em, password: pw, csrfmiddlewaretoken: csr }
+        console.log(mydata);
+
+        $.ajax({
+            url: "{% url 'search' %}",
+            method: "POST",
+            data: mydata,
+            success: function (data) {
+                // console.log(data.status);
+                output = "";
+                x = data.student_data;
+                if (data.status == "Save") {
+                    if(id == ''){
+                        document.getElementById("msg").style.display = 'none';
+                        $('#msg1').text("Form Submitted Successfully");
+                        $('#msg1').show();
+                    }
+                    else{
+                        document.getElementById("msg").style.display = 'none';
+                        $('#msg1').text("Form Updated Successfully");
+                        $('#msg1').show();
+                    }
+                    
+                    //alert("Form Submitted Successfully");
+                    //console.log("Form Submitted Successfully");
+                    //console.log(data.student_data);
+                    
+                    //console.log(x[1].id)
+
+                    for (i = 0; i < x.length; i++) {
+                        output +=
+                            "<tr><td>" +
+                            x[i].pdf_key +
+                            "</td><td>" +
+                            x[i].pdf_Name +
+                            "</td><td>" +
+                            x[i].pdf_year +
+                            "<tr><td>" +
+                            x[i].M_No +
+                            "</td><td>" +
+                            x[i].Agenda_Tpc +
+                            "</td><td>" +
+                            x[i].Page_Start +
+                            "</td><td>" +
+                            x[i].Page_End +
+                            "</td></tr><br>";
+                    }
+                    // console.log("Reload");
+                    // console.log(output);
+                    //alert(output);
+
+                    $("#tbody").html(output);
+
+
+                    $("form")[0].reset();
+                }
+
+                if (data.status == 0) {
+                    alert("Form Submition Failed")
+                }
+
+            },
+
+        })
+
+    }
+});
+//Insert data

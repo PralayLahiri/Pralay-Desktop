@@ -1,0 +1,11 @@
+*.pyc
+MANIFEST
+dist/
+build/
+*.egg-info/
+*~
+
+/.settings/
+/.pydevproject
+/.project
+.tox/

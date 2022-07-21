@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <script src="css/cdn.tailwindcss.com.css"></script> -->
+    <script src="https://unpkg.com/alpinejs" defer></script>
+
+</head>
+
+<body class="w-10 items-center p-4 bg-indigo-100">
+    <!-- flex h-screen  justify-center -->
+<!-- 
+{% for a in glossary.GlossDiv.GlossList %}
+    {{ a.GlossTerm }} <br>
+{% endfor %} -->
+    
+<div class="flex justify-between items-center gap-10" x-data="{
+    
+    'sdf' : [['Home', '{% url 'first_home_page' %}'], ['Services', '{% url 'services_click_action' %}'], ['Contactus', '{% url 'contactssasdasd' %}']],
+    
+
+  }">
+
+        <template x-for="b in sdf" >
+
+            <a class="text-3xl font-bold text-center hover:text-indigo-400 select-none text-indigo-500 cursor-pointer"
+                :href="b[1]" x-text="b[0]">
+                Hello world!
+            </a>
+        </template>
+
+        
+
+
+    </div>
+    <br>
+    <!-- <div class=" items-center gap-1" x-data="{
+    
+        'js_data' : {{ glossary.GlossDiv.GlossList|safe }}
+    
+      }">
+        <template x-for=" x in js_data">
+            <div x-text="x.ID">
+    
+            </div>
+        </template>
+    </div> -->
+    
+
+</body>
+
+</html>
