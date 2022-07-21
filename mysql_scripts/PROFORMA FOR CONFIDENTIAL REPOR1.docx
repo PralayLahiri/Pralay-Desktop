@@ -1,0 +1,27 @@
+use edp;
+drop table GVM_Report;
+create table GVM_Report
+(
+sl_no int not null AUTO_INCREMENT primary key,
+pdf_year year not null,
+pdf_path varchar(255) not null,
+pdf_name varchar(255) not null,
+b_s_page int default null,
+b_e_page int default null,
+c_s_page int default null,
+c_e_page int default null,
+constraint Page_Val check (b_e_page >= b_s_page or c_e_page >=c_s_page),
+constraint Page_null check ((b_s_page is not null and b_e_page is not null) or (c_s_page is not null and  c_e_page is not null) ),
+constraint unique_key unique (pdf_year,pdf_path,pdf_name)
+);
+
+
+INSERT INTO GVM_Report (pdf_year, pdf_path, pdf_name, b_s_page, b_e_page,  c_s_page, c_e_page) VALUES(2019,'E:\\Pythonjango','0001.pdf',0,NULL,12,null);
+
+show tables;
+
+select * from GVM_Report;
+truncate table GVM_Report;
+delete from GVM_Report where pdf_path = 'E:\Pythonjango';
+
+commit;

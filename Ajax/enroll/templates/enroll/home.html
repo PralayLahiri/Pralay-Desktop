@@ -1,0 +1,155 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'></link>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+    
+    <title> Django Ajax </title>
+</head>
+
+<body class="bg-slate-100 px-8 py-8">
+    <div class="item-center">
+        <div class="">
+            <h2 class="text-center ring-2 ring-red-500 bg-red-100 center px-8 py-8 rounded-lg">
+                Django Function Based View Ajax</h2>
+            
+                <br>
+            
+            <div class="flex justify-between py-6 px-6 ring-2 ring-black rounded-lg">
+                
+                <div class="justify-between  text-black text-left px-2">
+                    <form action="" method="post" class="justify-between  text-black text-left">
+
+                        <div class=" rounded-lg">
+                            <h2 class="text-center ring-2 ring-green-500 center px-8 py-8 rounded-lg bg-green-200">Add Update User</h2>
+
+                        </div>
+                        <br>
+                        <div class="ring-2 ring-gray-900 px-2 py-2 rounded-lg ">
+                        <table > 
+                            {% csrf_token %}
+                            <input type="hidden" name="stuid" id="stuid" />
+                            
+                                <!-- {{form}} -->
+                                <tr>
+                                    <th><label for="id_name">Name:</label></th>
+                                    <td class="border-black rounded-lg ">
+                                
+                                      <input type="text" name="name" maxlength="70" required id="id_name" class="ring-2 ring-gray-700 rounded-lg bg-white text-black text-left"/>
+                                
+                                
+                                    </td>
+                                  </tr>
+                                
+                                  <tr>
+                                    <th><label for="id_email">Email:</label></th>
+                                    <td class="border-black rounded-lg ">
+                                
+                                      <input type="text" name="email" maxlength="100" required id="id_email" class="ring-2 ring-gray-700 rounded-lg bg-white text-black text-left" />
+                                
+                                
+                                    </td>
+                                  </tr>
+                                
+                                  <tr>
+                                    <th><label for="id_password">Password:</label></th>
+                                    <td class="border-black rounded-lg ">
+                                
+                                      <input type="text" name="password" maxlength="100" required id="id_password" class="ring-2 ring-gray-700 rounded-lg bg-white text-black text-left" />
+                                
+                                
+                                
+                                
+                                    </td>
+                                  </tr>
+                          
+                            
+                        </table>
+                     </div>
+                        {% csrf_token %}
+                        <br>
+                        <input onclick="swtalrt()"  type="button" id="btnsave" value='Submit' class="  bext-center ring-2 ring-green-500 center px-2 py-2 rounded-lg bg-green-200"> </input>
+
+
+                    </form>
+                    <div id="msg"  class="text-center ring-2 ring-red-500 bg-red-100 center px-8 py-8 rounded-lg"
+                    style="display: none"> </div>
+                    <div id="msg1"  class="text-center ring-2 ring-green-500 bg-green-100 center px-8 py-8 rounded-lg"
+                    style="display: none"> </div>
+                </div>
+                <div class="">
+                    <h2 class="text-center text-center ring-2 ring-green-500 center px-8 py-8 rounded-lg bg-green-200">User Information</h2>
+                    <br><table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th  scope="col">ID</th>
+                                <th scope="col">NAME</th>
+                                <th scope="col">EMAIL</th>
+                                <th scope="col">PASSWORD</th>
+                                <th scope="col">Action</th>
+                            </tr>
+
+                        </thead>
+                        <tbody id="tbody" >
+                            {% for st in stu %}
+                            
+                            
+                            <tr>
+                          
+                                <td>{{st.id}}</td>
+      
+                                <td>{{st.name}}</td>
+                                <td>{{st.email}}</td>
+                                <td>{{st.password}}</td>
+                                <td>
+                                    <input type="button" data-sid="{{st.id}}" class="btn btn-warning btn-edit"
+                                        value="Edit">
+                                    <input type="button" data-sid="{{st.id}}" class="btn btn-danger btn-del" 
+                                        value="Delete" >
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <br>
+            
+                <div>
+                
+                  <a type="button" href="{% url 'logout' %}"    id="btn-logout"  name="Logout"  class="bext-center ring-2 ring-red-500 center px-2 py-2 rounded-lg bg-red-200">Logout </a>
+                 
+                </div>
+            
+
+                <script src="{% static 'js/cdn.tailwindcss.js' %}"></script>
+                <script src="{% static 'js/bootstrap.js' %}"></script>
+                <script src="{% static 'js/jquery.js' %}"></script>
+                <script src="{% static 'js/popper.js' %}"></script>
+                <script src="{% static 'js/sweetalert.js' %}"></script>
+                <script>
+                        var data = {{stu|safe }}
+                        console.log(data.id)
+                        console.log(data)
+
+                </script>
+                
+               <!-- <script>
+
+                    console.log({{ form }}); 
+
+                </script> -->
+
+                {% include "enroll/ajax.html" %}
+
+</body>
+
+</html>
