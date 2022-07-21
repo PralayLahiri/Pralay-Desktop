@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,11 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'></link>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
-    
-    <title> Django Ajax </title>
+    <title>Django Ajax</title>
 </head>
 
 <body class="bg-slate-100 px-8 py-8">
@@ -36,7 +31,6 @@
                         <div class="ring-2 ring-gray-900 px-2 py-2 rounded-lg ">
                         <table > 
                             {% csrf_token %}
-                            <input type="hidden" name="stuid" id="stuid" />
                             
                                 <!-- {{form}} -->
                                 <tr>
@@ -73,17 +67,13 @@
                           
                             
                         </table>
-                     </div>
+                    </div>
                         {% csrf_token %}
                         <br>
-                        <input onclick="swtalrt()"  type="button" id="btnsave" value='Submit' class="  bext-center ring-2 ring-green-500 center px-2 py-2 rounded-lg bg-green-200"> </input>
+                        <input type="button" id="btnsave" value='Submit' class="bext-center ring-2 ring-green-500 center px-2 py-2 rounded-lg bg-green-200"> </input>
 
 
                     </form>
-                    <div id="msg"  class="text-center ring-2 ring-red-500 bg-red-100 center px-8 py-8 rounded-lg"
-                    style="display: none"> </div>
-                    <div id="msg1"  class="text-center ring-2 ring-green-500 bg-green-100 center px-8 py-8 rounded-lg"
-                    style="display: none"> </div>
                 </div>
                 <div class="">
                     <h2 class="text-center text-center ring-2 ring-green-500 center px-8 py-8 rounded-lg bg-green-200">User Information</h2>
@@ -98,22 +88,18 @@
                             </tr>
 
                         </thead>
-                        <tbody id="tbody" >
+                        <tbody id="tbody">
                             {% for st in stu %}
-                            
-                            
                             <tr>
-                          
-                                <td>{{st.id}}</td>
-      
-                                <td>{{st.name}}</td>
-                                <td>{{st.email}}</td>
-                                <td>{{st.password}}</td>
+                                <td>{{st.id}}_Extnd</td>
+                                <td>{{st.name}}_Extnd</td>
+                                <td>{{st.email}}_Extnd</td>
+                                <td>{{st.password}}_Extnd</td>
                                 <td>
                                     <input type="button" data-sid="{{st.id}}" class="btn btn-warning btn-edit"
                                         value="Edit">
-                                    <input type="button" data-sid="{{st.id}}" class="btn btn-danger btn-del" 
-                                        value="Delete" >
+                                    <input type="button" data-sid="{{st.id}}" class="btn btn-danger btn-edit"
+                                        value="Delete">
                                 </td>
                             </tr>
                             {% endfor %}
@@ -122,27 +108,12 @@
 
                 </div>
             </div>
-            <br>
-            
-                <div>
-                
-                  <a type="button" href="{% url 'logout' %}"    id="btn-logout"  name="Logout"  class="bext-center ring-2 ring-red-500 center px-2 py-2 rounded-lg bg-red-200">Logout </a>
-                 
-                </div>
-            
+            <div>
 
                 <script src="{% static 'js/cdn.tailwindcss.js' %}"></script>
                 <script src="{% static 'js/bootstrap.js' %}"></script>
                 <script src="{% static 'js/jquery.js' %}"></script>
                 <script src="{% static 'js/popper.js' %}"></script>
-                <script src="{% static 'js/sweetalert.js' %}"></script>
-                <script>
-                        var data = {{stu|safe }}
-                        console.log(data.id)
-                        console.log(data)
-
-                </script>
-                
                <!-- <script>
 
                     console.log({{ form }}); 
