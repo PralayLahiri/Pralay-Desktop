@@ -1,0 +1,23 @@
+[
+  {
+    "name": "add",
+    "path": "/add",
+    "component": "E:\\\\Pythonjango\\\\Nuxt-Deta-v1-main\\\\pages\\\\add.vue",
+    "chunkName": "pages/add",
+    "_name": "_62e14413"
+  },
+  {
+    "name": "login",
+    "path": "/login",
+    "component": "E:\\\\Pythonjango\\\\Nuxt-Deta-v1-main\\\\pages\\\\login.vue",
+    "chunkName": "pages/login",
+    "_name": "_080e285b"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "E:\\\\Pythonjango\\\\Nuxt-Deta-v1-main\\\\pages\\\\index.vue",
+    "chunkName": "pages/index",
+    "_name": "_3e668544"
+  }
+]
