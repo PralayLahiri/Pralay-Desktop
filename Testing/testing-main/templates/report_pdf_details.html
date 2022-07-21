@@ -1,0 +1,343 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<script src="{% static 'js/cdn.tailwindcss.js' %}"></script>
+<script src="{% static 'js/validation_report_gbm.js' %}"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/Util.js' %}"></script>
+<script src="{% static 'js/Helper.js' %}"></script>
+<script src="{% static 'js/alpine.js' %}"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+{% comment %} /home/pralay/mytry_fileData_pdf_generate/templates/static/ {% endcomment %}
+
+{% comment %}
+<script src="css/cdn.tailwindcss.css"></script>
+<script src="js/validation_gbm.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/Util.js"></script>
+<script src="js/Helper.js"></script>
+<script src="js/alpine.js"></script> {% endcomment %}
+
+
+
+
+
+<script type="text/javascript">
+
+    
+ //-----------------------------------------------------------------------  
+ 
+ 
+    function loadAgeSelector_1(from_year_list) {   
+        //debugger;    
+        //alert(array_year1);
+        
+        //console.log("length",array_year1);
+        //var reminder;
+        //var presentyear = new Date().getFullYear(); //
+
+        var startyear = Math.max(...from_year_list);
+
+        
+        var endyear = 1984;
+        for (var i = startyear; i >= endyear; i--) {
+            node = document.createElement("Option");
+            var next = i+1;
+            var year = i + '-' + next.toString().slice(-2);
+
+            textnode = document.createTextNode(year);
+            node.appendChild(textnode);
+            node.value=i;
+            document.getElementById("Years_1").appendChild(node);
+            
+        }
+    }
+
+    function loadAgeSelector_2(from_year_list) {
+        {% comment %} let element_y1 = document.getElementById("Years_1");
+        while (element_y1.firstChild) {
+          element_y1.removeChild(element_y1.firstChild);
+        } {% endcomment %}
+
+
+
+        //alert(from_year_list);
+        //var startyear = new Date().getFullYear();
+        var startyear = Math.max(...from_year_list);
+        //alert(startyear);
+        var endyear = 1984;
+        var reminder;
+        for (var i = startyear; i >= endyear; i--) {
+            node = document.createElement("Option");
+            var next = i+1;
+            var year = i + '-' + next.toString().slice(-2);
+
+            textnode = document.createTextNode(year);
+            node.appendChild(textnode);
+            node.value=i;
+            
+            document.getElementById("Years_2").appendChild(node);
+        }
+    }
+
+
+    {% comment %} $('#agnda_1').click(function(e) {
+        $("#agnda_1").html($('#agnda_1 option').sort(function(x, y) {
+              return $(x).val() < $(y).val() ? -1 : 1;
+        }))
+        $("#agnda_1").get(0).selectedIndex = 0;
+        e.preventDefault();
+     }); {% endcomment %}
+
+</script>
+
+
+<script>
+    $(document).ready(function() {
+        $(window).keydown(function(event){
+          if(event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+          }
+        });
+      });
+
+
+    {% comment %} $('#agnda_2').bind('keypress keydown keyup', function(e){
+    if(e.keyCode == 13) { e.preventDefault(); }
+    }); {% endcomment %}
+
+        {% comment %} function submition() {
+            //data_pass = entry;
+            //alert('success');
+            //alert(entry);
+            //if (entry.length != 0) {
+            $.ajax({
+                type: "POST",
+                url: "/create_split_pdf",
+                data: {
+                    "agnda_1": document.getElementById("agnda_1").value,
+                    "agnda_2": document.getElementById("agnda_2").value,
+                    "mtng_1": document.getElementById("mtng_1").value,
+                    "mtng_2": document.getElementById("mtng_2").value,
+                    "Years_1": document.getElementById("Years_1").value,
+                    "Years_2": document.getElementById("Years_2").value,
+                    "csrfmiddlewaretoken": "{{csrf_token}}"
+                },
+
+            });
+            //alert(entry);
+            //alert(entry);
+            //alert(entry);
+
+        }; {% endcomment %}
+
+</script>
+
+{% comment %} <script type="text/javascript">
+    function reload(){   
+         window.location.replace('your link');
+        return false;
+    }
+   </script> {% endcomment %}
+
+
+<title> Generate Report </title>
+
+{% comment %} onload="loadAgeSelector_1({{array_year1|safe}}), {% endcomment %}
+<body class="text-1xl font-semibold bg-gradient-to-r from-sky-100 to-indigo-400" onload="loadAgeSelector_1({{from_year_list|safe}}), loadAgeSelector_2({{from_year_list|safe}})">
+    {% comment %} {{from_year}} {{to_year}} {% endcomment %}
+	{% comment %} {{from_year}} {% endcomment %}
+
+   	<form id="form1" action="{% url 'create_split_pdf'%}" method="POST" target="_blank" >
+
+    
+    <div class=" h-screen sticky ">
+        {% csrf_token %} 
+
+            <div class=" mx-auto px-8 ">
+                <h1
+                    class="text-2xl uppercase font-semibold  py-6 text-center px-12  w-full bg-indigo-500 opacity-500  rounded uppercase text-white  px-4 py-2">
+                    GBM report Generation</h1>
+                <p class="text-m uppercase text-center text-indigo-900">Please provide information to generate report</p>
+                <p class="text-m uppercase text-center text-red-900">{{message}}</p>
+                <hr>
+            </div>
+
+            <div class="  px-8"> 
+                <div class="flex justify-between py-6">
+                    
+                    {% comment %} /////////// 111111111111///////// {% endcomment %}
+                    <div class="rounded text-indigo-900 w-2/4">
+                        {% comment %} Step 1* <br> {% endcomment %}
+                        Agenda topic: <br>
+                        {% comment %} onfocus='this.size=10;' {% endcomment %}
+                       <select disabled=true style='display:none;'  class=" rounded bg-indigo-100  px-4 py-2 outline-none " value="m" 
+                            name="agnda_1" id="agnda_1" onchange="fileValidation_to_agnt_select({{pdf|safe}}), Submit_check({{pdf|safe}})">
+                             {% comment %} <option selected="selected" class="h-1/3" value="ALL" name="Meeting">ALL</option>  {% endcomment %}
+                        </select>
+                            {% comment %} ----NEW-- {% endcomment %}
+                            <input list="txtName_d" id="agnda_2" class=" rounded w-full p-2 outline-none hover:bg-indigo-100 "   name="agnda_2"   
+                            onkeyup="fileValidation_to_agnt_select({{pdf|safe}})" onchange="Submit_check({{pdf|safe}})" 
+                            placeholder="You May Search Agenda Topic ....." >
+                            {% comment %} onkeydown="fileValidation_to_agnt_select({{pdf|safe}})" placeholder="Search Agenda topic ....."> {% endcomment %}
+                            {% comment %} onkeyenter="fileValidation_to_agnt_select({{pdf|safe}})" placeholder="Search Agenda topic ....."> {% endcomment %}
+                                    <datalist id="txtName_d" class="h-1/3 w-full rounded w-full p-2 outline-none hover:bg-indigo-100 ">
+                                        <option selected="selected" class="h-1/3 w-full rounded w-full p-2 outline-none hover:bg-indigo-100 " value="ALL" name="Agenda" placeholder="ALL"></option>
+                                        {% for agenda_list in agenda_list %}
+
+                                        <option class="w-full rounded w-full  p-2 outline-none hover:bg-indigo-100 ">{{agenda_list}} </option>
+                                        
+                                        {% endfor%}
+                                    </datalist> </input>
+                            {% comment %} ----NEW-- {% endcomment %}
+                        
+                    </div>
+                </div>
+                    <br>
+                    <div class="flex justify-between py-6">
+                    {% comment %} ///////// 11111111 ///////// {% endcomment %}
+
+                    {% comment %} ///////// 222222222 /////////// {% endcomment %}
+                    
+                    <div class="rounded text-indigo-900"><br>
+                        {% comment %} Step 2* <br> {% endcomment %}
+                        Meeting No: 
+                        <select disabled=true style='display:none;'  class="rounded bg-indigo-100  px-4 py-2 outline-none " value="m"
+                            name="mtng_1" id="mtng_1" onchange=" fileValidation_to_mtng_select({{pdf|safe}}), Submit_check({{pdf|safe}})"> 
+                            
+                             {% comment %} <option selected="selected" class="h-1/3" value="ALL" name="Meeting">ALL</option>  {% endcomment %}
+                        </select>    
+                             {% comment %} -------------NEW----------- {% endcomment %}
+                             <input style='display:;'   list="mtng_1_d" id="mtng_2" class="rounded w-full p-2 outline-none hover:bg-indigo-100 "   name="mtng_2"  placeholder="Search Meeting No. ....."
+                              onkeyup="fileValidation_to_mtng_select({{pdf|safe}})" onchange="Submit_check({{pdf|safe}})"
+                              >
+                              {% comment %} , fileValidation_to_mtng_select({{pdf|safe}})"> {% endcomment %}
+                                <datalist     id="mtng_1_d" class="h-1/3 w-full rounded w-full p-2 outline-none hover:bg-indigo-100 ">
+                                    <option selected="selected" class="h-1/3 w-full rounded w-full p-2 outline-none hover:bg-indigo-100 " value="ALL" name="Meeting"></option>
+                                    {% for mtng_list in mtng_list %}
+
+                                    <option  id ="mtng_list_id" class="w-full rounded w-full p-2 outline-none hover:bg-indigo-100 ">{{mtng_list}} </option>
+                                    
+                                    {% endfor%}
+                                </datalist>
+
+                             {% comment %} -------------NEW----------- {% endcomment %}
+                        {% comment %} </select> {% endcomment %}
+                        
+                    </div>
+
+                    {% comment %} ///////// 222222222 /////////// {% endcomment %}
+
+
+                    <div class="rounded text-indigo-900"> <br>
+                        Financial Year (From): <br>
+                        <select class="rounded bg-indigo-100  px-4 py-2 outline-none" value="b" 
+                        onchange="Submit_check({{pdf|safe}})"
+                        {% comment %} onchange="FromYears({{pdf|safe}},{{from_year_list|safe}})" {% endcomment %}
+                            name="Years_1" id="Years_1" >
+                            {% comment %} onclick="submit_btn_active({{pdf|safe}})">  {% endcomment %}
+                            <option selected="selected" class="h-1/3" value="a1" name="Years">From Year</option>
+                        </select>
+                        {% comment %} <select disabled=false  style='display:;'   class="rounded bg-indigo-100  px-4 py-2 outline-none " value="m"
+                            name="Years_1" id="Years_1_1" onchange="fileValidation_to_mtng_select({{pdf|safe}})">                            
+                        </select> {% endcomment %}
+                         
+                    </div>
+                    {% comment %} <div> <br> <br>
+                        <h1  class="rounded text-indigo-900"> <= </h1>
+                    </div> {% endcomment %}
+                    <div class="rounded text-indigo-900"> <br>
+                        Financial Year (To): <br>
+                        <select class="rounded bg-indigo-100  px-4 py-2 outline-none" value="b" onchange=" FromYears({{pdf|safe}},{{from_year_list|safe}}), Submit_check({{pdf|safe}})"
+                            name="Years_2" id="Years_2"  >
+                            {% comment %} onclick="submit_btn_active({{pdf|safe}})">  {% endcomment %}
+                            <option selected="selected" class="h-1/3" value="a2" name="Years">To Year</option>
+                        </select>
+                        {% comment %} <select disabled=false  style='display:;'   class="rounded bg-indigo-100  px-4 py-2 outline-none " value="m"
+                            name="Years_2" id="Years_2_2" onchange="fileValidation_to_mtng_select({{pdf|safe}})">
+                        </select> {% endcomment %}
+                        
+                        
+                    </div>
+                    
+                    
+                   
+            </div>
+            <div class=" rounded text-indigo-900"> <br>
+                <p>Order Type:</p>
+
+                <input checked   type="radio" id="submit1" name="submit1" value="asc">
+                </input>
+                <label for="submit1">Ascending</label><br>
+                <input  type="radio" id="update" name="submit1" value="desc"> </input>
+                <label for="update">Descending</label>
+
+
+            </div>
+            <br>
+
+            <div>
+                <button onclick="window.location.reload();"  class=" bg-red-600 opacity-500 hover:bg-red-400 rounded uppercase text-white  px-4 py-2 hover:-translate-y-1 transition ease-in-out delay-150 hover:scale-110 duration-300">Clear Filters</button>
+            </div>   
+
+
+           
+            <div class=" mx-auto flex justify-center gap-2 py-4 text-center  w-full " >
+                <!-- {% csrf_token %} -->
+                {% csrf_token %}
+
+                <input diabled=true type="submit" name="submit" id="submit" value="generate report" 
+                    {% comment %} class=" bg-indigo-500 opacity-500 hover:bg-indigo-400 rounded uppercase text-white  px-4 py-2 hover:-translate-y-1 transition ease-in-out delay-150 hover:scale-110 duration-300" /> {% endcomment %}
+                    class=" bg-slate-500 opacity-500 hover:bg-slate-400 rounded uppercase text-white  px-4 py-2 hover:-translate-y-1 transition ease-in-out delay-150 hover:scale-110 duration-300" />
+
+                 </div>
+
+            {% csrf_token %}
+
+        
+        <div class=" mx-auto flex justify-center gap-2 py-4 text-center  w-full">
+
+            {% comment %} <a href="{% url 'login' %}" type="submit" name="submit" id="submit" value="Submit" class="bg-indigo-500 opacity-500 hover:bg-indigo-400 rounded uppercase text-white  px-4 py-2 hover:-translate-y-1 transition ease-in-out delay-150 hover:scale-110 duration-300" target="_blank"></a> {% endcomment %}
+            <a href = '{% url "Login" %}' type="submit" name="submit" id="submit" value="Submit" class="bg-indigo-500 opacity-500 hover:bg-indigo-400 rounded uppercase text-white  px-4 py-2 hover:-translate-y-1 transition ease-in-out delay-150 hover:scale-110 duration-300">Log out</a>
+        </div>
+        <div id="ftdt" style="display:none;">
+            <h1 class="text-2xl text-red-900" >** You must choose Financial Year (From)  and Financial Year (To), to generate report.</h1>
+        </div>   
+</div>
+{% comment %} <script src="{% static 'js/GBM_FilterData.js' %}"></script> {% endcomment %}
+    <script type="text/javascript" >
+        var showemp = {{pdf|safe}}
+        var showemp_agenda = {{agenda_list|safe}}
+        var showemp_agenda_1 = {{mtng_list|safe}}
+        var showemp_agenda_2 = {{from_year_list|safe}}
+        {% comment %} var startyear = new Date().getFullYear(); {% endcomment %}
+        {% comment %} const array_year2=[1984,2019]; {% endcomment %}
+        //console.log("Initial---",array_year1);
+
+        {% comment %} const array_year1=array_year2; {% endcomment %}
+
+        console.log(showemp);
+        console.log("agenda_list: ",showemp_agenda);
+        console.log("Meeting_list: ",showemp_agenda_1);
+        console.log("Date_list: ",showemp_agenda_2);
+        {% comment %} InitiateLists(showemp); {% endcomment %}
+    </script>
+    
+    <script  type="text/javascript">
+        
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            
+        }
+        
+    </script>
+    
+    
+</form>
+</body>
+
+</html>

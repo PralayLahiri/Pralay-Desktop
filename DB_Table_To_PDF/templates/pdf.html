@@ -1,0 +1,67 @@
+{% load static %}
+<html>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <script src="{% static 'js/cdn.tailwindcss.js' %}"></script>
+    
+    <head>
+        <style>
+            * {
+                font-size: 15px;
+            }
+
+            table {
+                table-layout: fixed;
+                width: 100%;
+                border: 1px solid black;
+            }
+
+            table th {
+                text-align: left;
+                padding: 3px;
+                padding-bottom: 0;
+            }
+
+            table td {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                padding: 3px;
+                padding-bottom: 0;
+            }
+            {% comment %} div{
+                
+                width: 100%;
+                border: 1px solid black;
+            } {% endcomment %}
+        </style>
+    </head>
+
+    <body >
+        <div>
+            <h1> Sample PDF Generate </h1>
+        </div>
+        <div>
+        <h1>***************************************************************************************** </h1>    
+        </div>
+    </br>
+
+        <table style="width:100%">
+            <tr>
+                <th> S No </th>
+                <th> Name </th>
+                <th> Roll No </th>
+                <th> Score </th>
+            </tr>
+            {%for data in record%}
+            <tr>
+                <td style="width: 10%;"> {{forloop.counter}} </td>
+                <td sttyle="width: 40%; text-align: left;"> {{data.name|title}} </td>
+                <td style="width: 30%;"> {{data.roll_no}} </td>
+                <td style="width: 20%;"> {{data.score}} </td>
+            </tr>
+            {%endfor%}
+        </table>
+        <p>Additional notification will come here....</p>
+    </body>
+</html>
