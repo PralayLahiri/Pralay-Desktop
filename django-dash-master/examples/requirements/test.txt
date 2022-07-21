@@ -1,0 +1,10 @@
+radar>=0.3,<1.0
+selenium==3.141.0
+simple-timer>=0.2
+factory_boy==2.11.1
+Faker==1.0.2
+pytest==4.3.0
+pytest-django==3.4.8
+coverage>=4.5.4
+pytest-cov==2.6.1
+tox==3.7.0

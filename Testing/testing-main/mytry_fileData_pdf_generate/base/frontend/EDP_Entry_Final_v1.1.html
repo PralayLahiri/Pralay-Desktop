@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/alpinejs" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+<style>
+
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td,
+    th {
+        border: 1px solid rgba(248, 248, 252, 0.246);
+        /* #9ea7da; */
+
+        text-align: left;
+        padding: 8px;
+
+    }
+
+    tr:nth-child(even) {
+        background-color: rgb(165 180 252);
+
+    }
+
+ 
+</style>
+<script>
+    var subjectObject = {
+        "1984": {},
+        "1985": {}
+
+    }
+    window.onload = function () {
+        var subjectSel = document.getElementById("Years");
+        for (var x in subjectObject) {
+            subjectSel.options[subjectSel.options.length] = new Option(x, x);
+        }
+    }
+</script>
+
+<body class="text-1xl font-semibold bg-gradient-to-r from-sky-100 to-indigo-400">
+    <div class=" h-screen sticky ">
+        <form action="" class="w-full">
+            <div class=" mx-auto px-8 ">
+                <h1
+                    class="text-2xl uppercase font-semibold  py-6 text-center px-12  w-full bg-indigo-500 opacity-500  rounded uppercase text-white  px-4 py-2">
+                    EDP GBM Entry</h1>
+                <p class="text-m uppercase text-center text-indigo-900">Please provide information to make an entry</p>
+                <hr>
+            </div>
+
+            <div class=" mx-auto px-8">
+                <div class="flex justify-between py-6">
+                    <div class="rounded text-indigo-900">
+                        Year: <select class="rounded-full bg-indigo-100  px-4 py-2 outline-none" name="Years" id="Years">
+                            <option value="" selected="selected">Select Year</option>
+                        </select>
+                    </div>
+                    <div>
+                        <input class="block w-full text-sm text-slate-500
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-full file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-indigo-500 file:text-white bg-indigo-100
+                        hover:file:bg-indigo-400
+                        opacity-500  rounded-full  
+                        " type="file" id="myFile" name="filename">
+                    </div>
+                </div>
+
+                <table class="table-auto ">
+                    <thead>
+                        <tr>
+                            <th class="bg-indigo-500 opacity-500  rounded uppercase text-white  px-4 py-2">
+                                FILE NAME</th>
+                            <TH width="20%" class="bg-indigo-500 opacity-500  rounded uppercase text-white  px-4 py-2">
+                                START PAGE</TH>
+                            <TH width="20%" class="bg-indigo-500 opacity-500  rounded uppercase text-white  px-4 py-2">
+                                END PAGE</TH>
+                        </tr>
+                    </thead>
+                    <tbody
+                        x-data="{ filetype: ['Balance Sheets', 'Change In Membership', 'Policies And StaffRules','Sanctioning Power','Cheque Signing Power' ] }">
+                        <template x-for="file in filetype">
+                            <tr class="bg-indigo-200  text-indigo-900">
+                                <td class=" hover:bg-indigo-100">
+                                    <div class=" flex justify-between w-full items-center hover:bg-indigo-100">
+                                        <span class="text-lg font-normal" x-text="file"></span>
+
+                                        <input type="checkbox">
+                                    </div>
+                                </td>
+
+                                <td><input class="w-full p-2 outline-none hover:bg-indigo-100" min="0" max="10" type="number"> </td>
+                                <td><input class="w-full p-2 outline-none hover:bg-indigo-100" min="0" max="10" type="number">
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+
+
+            </div>
+            <div class=" mx-auto flex justify-center gap-2 py-4 text-center  w-full">
+                <Button
+                    class="bg-indigo-500 opacity-500 hover:bg-indigo-400 rounded uppercase text-white  px-4 py-2 hover:-translate-y-1 transition ease-in-out delay-150 hover:scale-110 duration-300">Submit</Button>
+                <Button
+                    class="bg-indigo-500 opacity-500 hover:bg-indigo-400 rounded uppercase text-white  px-4 py-2 hover:-translate-y-1 transition ease-in-out delay-150 hover:scale-110 duration-300">Update</Button>
+
+            </div>
+
+        </form>
+    </div>
+
+</body>
+
+</html>
